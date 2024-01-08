@@ -1,0 +1,18 @@
+package notryken.effecttimer;
+
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.ConfigScreenHandler;
+import notryken.effecttimer.gui.screen.GlobalConfigScreen;
+
+@Mod(Constants.MOD_ID)
+public class EffectTimerNeoForge {
+    public EffectTimerNeoForge() {
+        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
+                () -> new ConfigScreenHandler.ConfigScreenFactory(
+                        (client, parent) -> new GlobalConfigScreen(parent))
+                );
+
+        EffectTimer.init();
+    }
+}
