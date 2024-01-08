@@ -33,7 +33,10 @@
         "issues": "${issues_url}"
     },
     "authors": ["${mod_author}"],
-    "contributors": [],
+    "contributors": [
+        "magicus",
+        "CrimsonEdgeHope"
+    ],
     "license": "${mod_license}",
     "icon": "icon.png",
     "custom": {

@@ -8,7 +8,6 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Mob;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -60,15 +59,28 @@ public class MixinGui {
                     int durationLength = minecraft.font.width(duration);
                     graphics.drawString(minecraft.font, duration, x + 13 - (durationLength / 2), y + 14, 0x99FFFFFF, false);
 
-                    int amplifier = effectInstance.getAmplifier();
-                    if (amplifier > 0) {
-                        String amplifierString = (amplifier < 6) ? I18n.get("potion.potency." + amplifier) : "**";
+                    if (effectInstance.getAmplifier() > 0) {
+                        String amplifierString = effectTimer$getAmplifierAsString(effectInstance);
                         int amplifierLength = minecraft.font.width(amplifierString);
                         graphics.drawString(minecraft.font, amplifierString, x + 22 - amplifierLength, y + 3, 0x99FFFFFF, false);
                     }
                 }
             }
         }
+    }
+
+    @Unique
+    private String effectTimer$getAmplifierAsString(MobEffectInstance effectInstance) {
+        int value = effectInstance.getAmplifier() + 1;
+        if (value > 1) {
+            String key = String.format("enchantment.level.%d", value);
+            if (I18n.exists(key)) {
+                return I18n.get(key);
+            } else {
+                return String.valueOf(value);
+            }
+        }
+        return "";
     }
 
     @Unique
