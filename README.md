@@ -15,7 +15,7 @@ Adds a timer overlay to status effect icons.
 
 ### Showcase
 
-<img alt=Showcase" src="https://i.postimg.cc/rmSqgDJC/effecttimer-showcase.png" width="637">
+<img alt="Showcase" src="https://i.postimg.cc/rmSqgDJC/effecttimer-showcase.png" width="637">
 
 ### Contact
 
