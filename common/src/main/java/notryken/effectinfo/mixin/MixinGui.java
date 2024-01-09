@@ -8,6 +8,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import notryken.effectinfo.EffectInfo;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -55,15 +56,14 @@ public class MixinGui {
                         y += 26;
                     }
 
-                    String duration = effectInfo$getDurationAsString(effectInstance);
-                    int durationLength = minecraft.font.width(duration);
-                    graphics.drawString(minecraft.font, duration, x + 13 - (durationLength / 2), y + 14, 0x99FFFFFF, false);
-
                     if (effectInstance.getAmplifier() > 0) {
                         String amplifierString = effectInfo$getAmplifierAsString(effectInstance);
                         int amplifierLength = minecraft.font.width(amplifierString);
-                        graphics.drawString(minecraft.font, amplifierString, x + 22 - amplifierLength, y + 3, 0x99FFFFFF, false);
+                        graphics.drawString(minecraft.font, amplifierString, x + 22 - amplifierLength, y + 3, EffectInfo.config().potencyColor, false);
                     }
+
+                    String duration = effectInfo$getDurationAsString(effectInstance);
+                    graphics.drawString(minecraft.font, duration, x + 3, y + 14, EffectInfo.config().countdownColor, false);
                 }
             }
         }

@@ -7,9 +7,9 @@
     "accessWidener": "${mod_id}.accesswidener",
     "entrypoints": {
         "main": [],
-        "client": [],
+        "client": ["${mod_group}.${mod_id}.${mod_name}Fabric"],
         "server": [],
-        "modmenu": []
+        "modmenu": ["${mod_group}.${mod_id}.gui.screen.ModMenuIntegration"]
     },
     "mixins": [
         "${mod_id}.mixins.json",
@@ -20,7 +20,9 @@
         "minecraft": "${minecraft_version_range_fabric}",
         "java": ">=17"
     },
-    "recommends": {},
+    "recommends": {
+        "modmenu": "${modmenu_version}"
+    },
     "suggests": {},
     "conflicts": {},
     "breaks": {},

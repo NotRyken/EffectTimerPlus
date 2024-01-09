@@ -17,7 +17,7 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation project(":common")
 
-//    modImplementation "maven.modrinth:modmenu:${modmenu_version}"
+    modImplementation "maven.modrinth:modmenu:${modmenu_version}"
 }
 
 loom {

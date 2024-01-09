@@ -57,7 +57,7 @@ subprojects {
     processResources {
         def expandProps = [
                 "version": version,
-                "mod_group": project.group, // Else we target the task's group.
+                "mod_group": mod_group,
                 "mod_id": mod_id,
                 "mod_environment": mod_environment,
                 "mod_name": mod_name,
@@ -70,7 +70,7 @@ subprojects {
                 "minecraft_version_range_forge": minecraft_version_range_forge,
                 "fabric_loader_version": fabric_loader_version,
                 "fabric_api_version": fabric_api_version,
-//                "modmenu_version": modmenu_version,
+                "modmenu_version": modmenu_version,
 //                "quilt_loader_version": quilt_loader_version,
 //                "quilt_api_version": quilt_api_version,
 //                "forge_version": forge_version,
