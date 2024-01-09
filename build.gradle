@@ -66,8 +66,8 @@ subprojects {
                 "mod_credits": mod_credits,
                 "mod_license": mod_license,
                 "minecraft_version": minecraft_version,
-                "min_minecraft_version": min_minecraft_version,
-                "minecraft_version_range": minecraft_version_range,
+                "minecraft_version_range_fabric": minecraft_version_range_fabric,
+                "minecraft_version_range_forge": minecraft_version_range_forge,
                 "fabric_loader_version": fabric_loader_version,
                 "fabric_api_version": fabric_api_version,
 //                "modmenu_version": modmenu_version,
@@ -76,15 +76,15 @@ subprojects {
 //                "forge_version": forge_version,
 //                "forge_loader_version_range": forge_loader_version_range,
 //                "forge_version_range": forge_version_range,
-//                "neoforge_version": neoforge_version,
-//                "neoforge_loader_version_range": neoforge_loader_version_range,
+                "neoforge_version": neoforge_version,
+                "neoforge_loader_version_range": neoforge_loader_version_range,
                 "homepage_url": homepage_url,
                 "sources_url": sources_url,
                 "issues_url": issues_url,
                 "contact_url": contact_url
         ]
 
-        filesMatching(['pack.mcmeta', 'fabric.mod.json', 'quilt.mod.json', 'META-INF/mods.toml', '*.mixins.json']) {
+        filesMatching(['pack.mcmeta', '*.mod.json', 'META-INF/mods.toml', '*.mixins.json']) {
             expand expandProps
         }
         inputs.properties(expandProps)

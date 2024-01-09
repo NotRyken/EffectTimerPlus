@@ -17,7 +17,7 @@
     ],
     "depends": {
         "fabricloader": ">=0.14",
-        "minecraft": "~${min_minecraft_version}",
+        "minecraft": "${minecraft_version_range_fabric}",
         "java": ">=17"
     },
     "recommends": {},
@@ -33,10 +33,7 @@
         "issues": "${issues_url}"
     },
     "authors": ["${mod_author}"],
-    "contributors": [
-        "magicus",
-        "CrimsonEdgeHope"
-    ],
+    "contributors": ["${mod_credits}"],
     "license": "${mod_license}",
     "icon": "icon.png",
     "custom": {
@@ -45,7 +42,7 @@
                 "Contact": "${contact_url}"
             }
         },
-        "chatnotify": {
+        "formatSpec": {
             "links": {
                 "formatSpec": "https://fabricmc.net/wiki/documentation:fabric_mod_json_spec"
             }
