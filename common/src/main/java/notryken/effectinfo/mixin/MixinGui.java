@@ -4,15 +4,13 @@ import com.google.common.collect.Ordering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.resources.language.I18n;
-import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import notryken.effectinfo.EffectInfo;
+import notryken.effectinfo.util.Util;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -32,9 +30,8 @@ public class MixinGui {
     private void renderDurationOverlay(GuiGraphics graphics, CallbackInfo ci) {
         Collection<MobEffectInstance> effects = this.minecraft.player.getActiveEffects();
         if (!effects.isEmpty()) {
-            // Replicate vanilla placement algorithm to get the duration
-            // labels to line up exactly right.
 
+            // Replicate vanilla placement algorithm to place labels correctly
             int beneficialCount = 0;
             int nonBeneficialCount = 0;
 
@@ -56,52 +53,73 @@ public class MixinGui {
                         y += 26;
                     }
 
-                    if (effectInstance.getAmplifier() > 0) {
-                        String amplifierString = effectInfo$getAmplifierAsString(effectInstance);
-                        int amplifierLength = minecraft.font.width(amplifierString);
-                        graphics.drawString(minecraft.font, amplifierString, x + 22 - amplifierLength, y + 3, EffectInfo.config().potencyColor, false);
+                    if (EffectInfo.config().potencyEnabled && effectInstance.getAmplifier() > 0) {
+                        String amplifierStr = Util.getAmplifierAsString(effectInstance.getAmplifier());
+                        int amplifierLen = minecraft.font.width(amplifierStr);
+                        int pX;
+                        int pY;
+                        switch(EffectInfo.config().potencyLocation) {
+                            case 0:
+                                pX = x + 3;
+                                pY = y + 3;
+                                break;
+                            case 1:
+                                pX = x + 22 - amplifierLen;
+                                pY = y + 3;
+                                break;
+                            case 2:
+                                pX = x + 3;
+                                pY = y + 14;
+                                break;
+                            case 3:
+                                pX = x + 22 - amplifierLen;
+                                pY = y + 14;
+                                break;
+                            default:
+                                pX = x + 22 - amplifierLen;
+                                pY = y + 3;
+                                EffectInfo.LOG.error(
+                                        "Unexpected value {} for potency location. Allowed values: 0-4",
+                                        EffectInfo.config().potencyLocation);
+                                break;
+                        }
+                        graphics.drawString(minecraft.font, amplifierStr, pX, pY, EffectInfo.config().potencyColor, false);
                     }
-
-                    String duration = effectInfo$getDurationAsString(effectInstance);
-                    graphics.drawString(minecraft.font, duration, x + 3, y + 14, EffectInfo.config().countdownColor, false);
+                    if (EffectInfo.config().countdownEnabled && (EffectInfo.config().ambientCountdownEnabled || !effectInstance.isAmbient())) {
+                        String durationStr = Util.getDurationAsString(effectInstance.getDuration());
+                        int amplifierLen = minecraft.font.width(durationStr);
+                        int pX;
+                        int pY;
+                        switch(EffectInfo.config().countdownLocation) {
+                            case 0:
+                                pX = x + 3;
+                                pY = y + 3;
+                                break;
+                            case 1:
+                                pX = x + 22 - amplifierLen;
+                                pY = y + 3;
+                                break;
+                            case 2:
+                                pX = x + 3;
+                                pY = y + 14;
+                                break;
+                            case 3:
+                                pX = x + 22 - amplifierLen;
+                                pY = y + 14;
+                                break;
+                            default:
+                                pX = x + 3;
+                                pY = y + 14;
+                                EffectInfo.LOG.error(
+                                        "Unexpected value {} for potency location. Allowed values: 0-4",
+                                        EffectInfo.config().potencyLocation);
+                                break;
+                        }
+                        int color = Util.getColor(effectInstance);
+                        graphics.drawString(minecraft.font, durationStr, pX, pY, color, false);
+                    }
                 }
             }
-        }
-    }
-
-    @Unique
-    private String effectInfo$getAmplifierAsString(MobEffectInstance effectInstance) {
-        int value = effectInstance.getAmplifier() + 1;
-        if (value > 1) {
-            String key = String.format("enchantment.level.%d", value);
-            if (I18n.exists(key)) {
-                return I18n.get(key);
-            } else {
-                return String.valueOf(value);
-            }
-        }
-        return "";
-    }
-
-    @Unique
-    private String effectInfo$getDurationAsString(MobEffectInstance effectInstance) {
-        int duration = effectInstance.getDuration();
-        if(duration == MobEffectInstance.INFINITE_DURATION) {
-            return "\u221e";
-        }
-        int seconds = Mth.floor((float) duration) / 20;
-        if (seconds > 3600) {
-            return ">1h";
-        }
-        else if (seconds >= 600) {
-            return seconds / 60 + "m";
-        }
-        else if (seconds > 60) {
-            int remainder = seconds % 60;
-            return seconds / 60 + ":" + (remainder > 9 ? remainder : "0" + remainder);
-        }
-        else {
-            return String.valueOf(seconds);
         }
     }
 }

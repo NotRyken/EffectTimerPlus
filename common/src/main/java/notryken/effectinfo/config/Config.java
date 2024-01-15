@@ -10,9 +10,13 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 public class Config {
-    // Constants
+    // Constants and defaults
     public static final String DEFAULT_FILE_NAME = "effectinfo.json";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final int DEFAULT_COLOR = -1761607681; // roughly 0x99FFFFFF
+    public static final int DEFAULT_WARN_COLOR = -65536; // max red, max alpha
+    public static final int DEFAULT_POTENCY_LOCATION = 1;
+    public static final int DEFAULT_COUNTDOWN_LOCATION = 2;
 
     // Not saved, not user-accessible
     private static Path configPath;
@@ -22,22 +26,63 @@ public class Config {
     private final int version = 1;
 
     // Saved, user-accessible
-    public boolean ambientEffectTime;
+    public boolean potencyEnabled;
+    public boolean countdownEnabled;
+    public boolean ambientCountdownEnabled;
+    public boolean countdownWarnEnabled;
+    public boolean countdownFlashEnabled;
+    public int countdownWarnTime;
     public int potencyColor;
     public int countdownColor;
+    public int warnColor;
+    public int potencyLocation;
+    public int countdownLocation;
 
     public Config() {
-        ambientEffectTime = false;
-        potencyColor = -1761607681; // roughly 0x99FFFFFF
-        countdownColor = -1761607681;
+        potencyEnabled = true;
+        countdownEnabled = true;
+        ambientCountdownEnabled = false;
+        countdownWarnEnabled = true;
+        countdownFlashEnabled = true;
+        countdownWarnTime = 20;
+        potencyColor = DEFAULT_COLOR;
+        countdownColor = DEFAULT_COLOR;
+        warnColor = DEFAULT_WARN_COLOR;
+        potencyLocation = DEFAULT_POTENCY_LOCATION;
+        countdownLocation = DEFAULT_COUNTDOWN_LOCATION;
     }
 
-    /*
-    this.r = (float)($$3 >> 16 & 255) / 255.0F;
-    this.g = (float)($$3 >> 8 & 255) / 255.0F;
-    this.b = (float)($$3 & 255) / 255.0F;
-    this.a = (float)($$3 >> 24 & 255) / 255.0F;
-     */
+    public int getCountdownWarnTime() {
+        return countdownWarnTime;
+    }
+
+    public void setCountdownWarnTime(int countdownWarnTime) {
+        this.countdownWarnTime = countdownWarnTime;
+    }
+
+    public int getPotencyColor() {
+        return potencyColor;
+    }
+
+    public void setPotencyColor(int potencyColor) {
+        this.potencyColor = potencyColor;
+    }
+
+    public int getCountdownColor() {
+        return countdownColor;
+    }
+
+    public void setCountdownColor(int countdownColor) {
+        this.countdownColor = countdownColor;
+    }
+
+    public int getWarnColor() {
+        return warnColor;
+    }
+
+    public void setWarnColor(int warnColor) {
+        this.warnColor = warnColor;
+    }
 
     // Config load and save
 
@@ -87,23 +132,5 @@ public class Config {
             throw new RuntimeException("Couldn't update config file", e);
         }
 
-    }
-
-    // Accessors, mutators and utility methods go here
-
-    public int getPotencyColor() {
-        return potencyColor;
-    }
-
-    public void setPotencyColor(int potencyColor) {
-        this.potencyColor = potencyColor;
-    }
-
-    public int getCountdownColor() {
-        return countdownColor;
-    }
-
-    public void setCountdownColor(int countdownColor) {
-        this.countdownColor = countdownColor;
     }
 }
