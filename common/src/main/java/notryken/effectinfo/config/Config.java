@@ -20,7 +20,6 @@ public class Config {
 
     // Not saved, not user-accessible
     private static Path configPath;
-    public static boolean configChecked;
 
     // Saved, not user-accessible
     private final int version = 1;

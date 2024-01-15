@@ -105,7 +105,6 @@ public class ConfigScreen extends OptionsSubScreen {
             int cLoc = EffectInfo.config().countdownLocation;
             String pStr = Util.getAmplifierAsString(effect.getAmplifier());
             String cStr = Util.getDurationAsString(effect.getDuration());
-            int seconds = effect.getDuration() / 20;
 
             if (EffectInfo.config().potencyEnabled && effect.getAmplifier() > 0) {
                 graphics.drawString(minecraft.font, pStr, pLoc % 2 == 0 ? x + 3 : x + 22 - minecraft.font.width(pStr),

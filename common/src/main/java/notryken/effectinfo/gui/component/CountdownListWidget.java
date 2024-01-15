@@ -35,7 +35,7 @@ public class CountdownListWidget extends AbstractListWidget  {
 
         int unitWidth = 200;
         int unitHeight = 18;
-        int unitX = parent.width - width / 2 - unitWidth / 2;
+        int unitX = parent.width - width + 10;
 
         Supplier<Integer> countdownSourceMain = EffectInfo.config()::getCountdownColor;
         Consumer<Integer> countdownDestMain = EffectInfo.config()::setCountdownColor;
@@ -108,12 +108,12 @@ public class CountdownListWidget extends AbstractListWidget  {
                 Component.literal("Reset"),
                 (button) -> {
                     EffectInfo.config().countdownEnabled = true;
-                    EffectInfo.config().ambientCountdownEnabled = true;
-                    EffectInfo.config().countdownLocation = 1;
+                    EffectInfo.config().ambientCountdownEnabled = false;
+                    EffectInfo.config().countdownLocation = Config.DEFAULT_COUNTDOWN_LOCATION;
                     EffectInfo.config().countdownColor = Config.DEFAULT_COLOR;
                     EffectInfo.config().countdownWarnEnabled = true;
                     EffectInfo.config().countdownFlashEnabled = true;
-                    EffectInfo.config().warnColor = Config.DEFAULT_COLOR;
+                    EffectInfo.config().warnColor = Config.DEFAULT_WARN_COLOR;
                     reload();
                 });
 

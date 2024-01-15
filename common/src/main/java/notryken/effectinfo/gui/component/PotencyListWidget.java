@@ -27,7 +27,7 @@ public class PotencyListWidget extends AbstractListWidget  {
 
         int unitWidth = 200;
         int unitHeight = 18;
-        int unitX = width / 2 - unitWidth / 2;
+        int unitX = width - unitWidth - 10;
 
         Supplier<Integer> potencySource = EffectInfo.config()::getPotencyColor;
         Consumer<Integer> potencyDest = EffectInfo.config()::setPotencyColor;
@@ -71,7 +71,7 @@ public class PotencyListWidget extends AbstractListWidget  {
                 Component.literal("Reset"),
                 (button) -> {
                     EffectInfo.config().potencyEnabled = true;
-                    EffectInfo.config().potencyLocation = 1;
+                    EffectInfo.config().potencyLocation = Config.DEFAULT_POTENCY_LOCATION;
                     EffectInfo.config().potencyColor = Config.DEFAULT_COLOR;
                     reload();
                 });
