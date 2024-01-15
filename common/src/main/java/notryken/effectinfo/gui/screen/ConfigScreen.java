@@ -73,12 +73,12 @@ public class ConfigScreen extends OptionsSubScreen {
             EffectInfo.restoreDefaultConfig();
             reload();
         })
-                .pos(this.width / 2 - 155, this.height - 29)
+                .pos(this.width / 2 - 154, this.height - 28)
                 .size(150, 20)
                 .build();
 
         doneButton = Button.builder(CommonComponents.GUI_DONE, (button) -> onClose())
-                .pos(this.width / 2 - 155 + 160, this.height - 29)
+                .pos(this.width / 2 + 4, this.height - 28)
                 .size(150, 20)
                 .build();
 
