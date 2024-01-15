@@ -27,6 +27,7 @@ public class CountdownListWidget extends AbstractListWidget  {
     protected AbstractListWidget.Entry warnGreenSlider;
     protected AbstractListWidget.Entry warnBlueSlider;
     protected AbstractListWidget.Entry warnTimeSlider;
+    protected AbstractListWidget.Entry bgAlphaSlider;
     protected AbstractListWidget.Entry resetButton;
 
 
@@ -37,8 +38,8 @@ public class CountdownListWidget extends AbstractListWidget  {
         int unitHeight = 18;
         int unitX = parent.width - width + 10;
 
-        Supplier<Integer> countdownSourceMain = EffectInfo.config()::getCountdownColor;
-        Consumer<Integer> countdownDestMain = EffectInfo.config()::setCountdownColor;
+        Supplier<Integer> colorSource = EffectInfo.config()::getCountdownColor;
+        Consumer<Integer> colorDest = EffectInfo.config()::setCountdownColor;
 
         mainHeader = new AbstractListWidget.Entry.TextEntry(this, unitX, 0, unitWidth, unitHeight,
                 Component.literal("Countdown Text Options"));
@@ -65,22 +66,22 @@ public class CountdownListWidget extends AbstractListWidget  {
                 new Integer[]{0, 1, 3, 2},
                 (value) -> EffectInfo.config().countdownLocation = value);
         colorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
-                (color) -> countdownDestMain.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(countdownSourceMain.get()))));
+                (color) -> colorDest.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(colorSource.get()))));
         alphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Alpha: ", countdownSourceMain, (alpha) ->
-                countdownDestMain.accept(withAlpha.applyAsInt(countdownSourceMain.get(), alpha)), toAlpha, fromAlpha);
+                "Alpha: ", colorSource, (alpha) ->
+                colorDest.accept(withAlpha.applyAsInt(colorSource.get(), alpha)), toAlpha, fromAlpha);
         redSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Red: ", countdownSourceMain, (red) ->
-                countdownDestMain.accept(withRed.applyAsInt(countdownSourceMain.get(), red)), toRed, fromRed);
+                "Red: ", colorSource, (red) ->
+                colorDest.accept(withRed.applyAsInt(colorSource.get(), red)), toRed, fromRed);
         greenSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Green: ", countdownSourceMain, (green) ->
-                countdownDestMain.accept(withGreen.applyAsInt(countdownSourceMain.get(), green)), toGreen, fromGreen);
+                "Green: ", colorSource, (green) ->
+                colorDest.accept(withGreen.applyAsInt(colorSource.get(), green)), toGreen, fromGreen);
         blueSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Blue: ", countdownSourceMain, (blue) ->
-                countdownDestMain.accept(withBlue.applyAsInt(countdownSourceMain.get(), blue)), toBlue, fromBlue);
+                "Blue: ", colorSource, (blue) ->
+                colorDest.accept(withBlue.applyAsInt(colorSource.get(), blue)), toBlue, fromBlue);
 
-        Supplier<Integer> countdownSourceWarn = EffectInfo.config()::getWarnColor;
-        Consumer<Integer> countdownDestWarn = EffectInfo.config()::setWarnColor;
+        Supplier<Integer> warnColorSource = EffectInfo.config()::getWarnColor;
+        Consumer<Integer> warnColorDest = EffectInfo.config()::setWarnColor;
         warnHeader = new AbstractListWidget.Entry.TextEntry(this, unitX, 0, unitWidth, unitHeight,
                 Component.literal("Low Time Warning Options"));
         warnToggleButton = new AbstractListWidget.Entry.DualOnOffButtonEntry(this, unitX, 0,
@@ -90,20 +91,27 @@ public class CountdownListWidget extends AbstractListWidget  {
                 Component.literal("Warn Flash"), EffectInfo.config().countdownFlashEnabled,
                 (value) -> EffectInfo.config().countdownFlashEnabled = value);
         warnColorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
-                (color) -> countdownDestWarn.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(countdownSourceWarn.get()))));
+                (color) -> warnColorDest.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(warnColorSource.get()))));
         warnAlphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Alpha: ", countdownSourceWarn, (alpha) ->
-                countdownDestWarn.accept(withAlpha.applyAsInt(countdownSourceWarn.get(), alpha)), toAlpha, fromAlpha);
+                "Alpha: ", warnColorSource, (alpha) ->
+                warnColorDest.accept(withAlpha.applyAsInt(warnColorSource.get(), alpha)), toAlpha, fromAlpha);
         warnRedSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Red: ", countdownSourceWarn, (red) ->
-                countdownDestWarn.accept(withRed.applyAsInt(countdownSourceWarn.get(), red)), toRed, fromRed);
+                "Red: ", warnColorSource, (red) ->
+                warnColorDest.accept(withRed.applyAsInt(warnColorSource.get(), red)), toRed, fromRed);
         warnGreenSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Green: ", countdownSourceWarn, (green) ->
-                countdownDestWarn.accept(withGreen.applyAsInt(countdownSourceWarn.get(), green)), toGreen, fromGreen);
+                "Green: ", warnColorSource, (green) ->
+                warnColorDest.accept(withGreen.applyAsInt(warnColorSource.get(), green)), toGreen, fromGreen);
         warnBlueSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Blue: ", countdownSourceWarn, (blue) ->
-                countdownDestWarn.accept(withBlue.applyAsInt(countdownSourceWarn.get(), blue)), toBlue, fromBlue);
+                "Blue: ", warnColorSource, (blue) ->
+                warnColorDest.accept(withBlue.applyAsInt(warnColorSource.get(), blue)), toBlue, fromBlue);
         warnTimeSlider = new Entry.WarnTimeSlider(this, unitX, 0, unitWidth, unitHeight);
+
+        Supplier<Integer> bgColorSource = EffectInfo.config()::getCountdownBgColor;
+        Consumer<Integer> bgColorDest = EffectInfo.config()::setCountdownBgColor;
+        bgAlphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+                "Background Alpha: ", bgColorSource, (alpha) ->
+                bgColorDest.accept(withAlpha.applyAsInt(bgColorSource.get(), alpha)), toAlpha, fromAlpha);
+
         resetButton = new AbstractListWidget.Entry.ActionButtonEntry(this, unitX, 0, unitWidth, unitHeight,
                 Component.literal("Reset"),
                 (button) -> {
@@ -114,6 +122,7 @@ public class CountdownListWidget extends AbstractListWidget  {
                     EffectInfo.config().countdownWarnEnabled = true;
                     EffectInfo.config().countdownFlashEnabled = true;
                     EffectInfo.config().warnColor = Config.DEFAULT_WARN_COLOR;
+                    EffectInfo.config().countdownBgColor = Config.DEFAULT_BG_COLOR;
                     reload();
                 });
 
@@ -133,6 +142,7 @@ public class CountdownListWidget extends AbstractListWidget  {
         addEntry(warnGreenSlider);
         addEntry(warnBlueSlider);
         addEntry(warnTimeSlider);
+        addEntry(bgAlphaSlider);
         addEntry(resetButton);
     }
 

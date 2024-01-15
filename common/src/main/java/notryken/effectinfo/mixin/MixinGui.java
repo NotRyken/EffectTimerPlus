@@ -83,6 +83,8 @@ public class MixinGui {
                                         EffectInfo.config().potencyLocation);
                                 break;
                         }
+                        graphics.fill(pX, pY, pX + amplifierLen, pY + minecraft.font.lineHeight - 1,
+                                EffectInfo.config().potencyBgColor);
                         graphics.drawString(minecraft.font, amplifierStr, pX, pY, EffectInfo.config().potencyColor, false);
                     }
                     if (EffectInfo.config().countdownEnabled && (EffectInfo.config().ambientCountdownEnabled || !effectInstance.isAmbient())) {
@@ -115,6 +117,8 @@ public class MixinGui {
                                         EffectInfo.config().potencyLocation);
                                 break;
                         }
+                        graphics.fill(pX, pY, pX + amplifierLen, pY + minecraft.font.lineHeight - 1,
+                                EffectInfo.config().countdownBgColor);
                         int color = Util.getColor(effectInstance);
                         graphics.drawString(minecraft.font, durationStr, pX, pY, color, false);
                     }

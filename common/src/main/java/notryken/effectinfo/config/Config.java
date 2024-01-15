@@ -14,6 +14,7 @@ public class Config {
     public static final String DEFAULT_FILE_NAME = "effectinfo.json";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final int DEFAULT_COLOR = -1761607681; // roughly 0x99FFFFFF
+    public static final int DEFAULT_BG_COLOR = -1776213727;
     public static final int DEFAULT_WARN_COLOR = -65536; // max red, max alpha
     public static final int DEFAULT_POTENCY_LOCATION = 1;
     public static final int DEFAULT_COUNTDOWN_LOCATION = 2;
@@ -32,7 +33,9 @@ public class Config {
     public boolean countdownFlashEnabled;
     public int countdownWarnTime;
     public int potencyColor;
+    public int potencyBgColor;
     public int countdownColor;
+    public int countdownBgColor;
     public int warnColor;
     public int potencyLocation;
     public int countdownLocation;
@@ -45,7 +48,9 @@ public class Config {
         countdownFlashEnabled = true;
         countdownWarnTime = 20;
         potencyColor = DEFAULT_COLOR;
+        potencyBgColor = DEFAULT_BG_COLOR;
         countdownColor = DEFAULT_COLOR;
+        countdownBgColor = DEFAULT_BG_COLOR;
         warnColor = DEFAULT_WARN_COLOR;
         potencyLocation = DEFAULT_POTENCY_LOCATION;
         countdownLocation = DEFAULT_COUNTDOWN_LOCATION;
@@ -67,12 +72,28 @@ public class Config {
         this.potencyColor = potencyColor;
     }
 
+    public int getPotencyBgColor() {
+        return potencyBgColor;
+    }
+
+    public void setPotencyBgColor(int potencyBgColor) {
+        this.potencyBgColor = potencyBgColor;
+    }
+
     public int getCountdownColor() {
         return countdownColor;
     }
 
     public void setCountdownColor(int countdownColor) {
         this.countdownColor = countdownColor;
+    }
+
+    public int getCountdownBgColor() {
+        return countdownBgColor;
+    }
+
+    public void setCountdownBgColor(int countdownBgColor) {
+        this.countdownBgColor = countdownBgColor;
     }
 
     public int getWarnColor() {

@@ -107,13 +107,19 @@ public class ConfigScreen extends OptionsSubScreen {
             String cStr = Util.getDurationAsString(effect.getDuration());
 
             if (EffectInfo.config().potencyEnabled && effect.getAmplifier() > 0) {
-                graphics.drawString(minecraft.font, pStr, pLoc % 2 == 0 ? x + 3 : x + 22 - minecraft.font.width(pStr),
-                        pLoc < 2 ? y + 3 : y + 14, EffectInfo.config().potencyColor, false);
+                int pX = pLoc % 2 == 0 ? x + 3 : x + 22 - minecraft.font.width(pStr);
+                int pY = pLoc < 2 ? y + 3 : y + 14;
+                graphics.fill(pX, pY, pX + minecraft.font.width(pStr), pY + minecraft.font.lineHeight - 1,
+                        EffectInfo.config().potencyBgColor);
+                graphics.drawString(minecraft.font, pStr, pX, pY, EffectInfo.config().potencyColor, false);
             }
             if (EffectInfo.config().countdownEnabled && (EffectInfo.config().ambientCountdownEnabled || !effect.isAmbient())) {
+                int pX = cLoc % 2 == 0 ? x + 3 : x + 22 - minecraft.font.width(cStr);
+                int pY = cLoc < 2 ? y + 3 : y + 14;
                 int color = Util.getColor(effect);
-                graphics.drawString(minecraft.font, cStr, cLoc % 2 == 0 ? x + 3 : x + 22 - minecraft.font.width(cStr),
-                        cLoc < 2 ? y + 3 : y + 14, color, false);
+                graphics.fill(pX, pY, pX + minecraft.font.width(cStr), pY + minecraft.font.lineHeight - 1,
+                        EffectInfo.config().countdownBgColor);
+                graphics.drawString(minecraft.font, cStr, pX, pY, color, false);
             }
             x += xSpace;
         }

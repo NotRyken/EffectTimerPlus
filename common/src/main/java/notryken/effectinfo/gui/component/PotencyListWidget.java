@@ -19,6 +19,7 @@ public class PotencyListWidget extends AbstractListWidget  {
     protected AbstractListWidget.Entry redSlider;
     protected AbstractListWidget.Entry greenSlider;
     protected AbstractListWidget.Entry blueSlider;
+    protected AbstractListWidget.Entry bgAlphaSlider;
     protected AbstractListWidget.Entry resetButton;
 
 
@@ -29,8 +30,8 @@ public class PotencyListWidget extends AbstractListWidget  {
         int unitHeight = 18;
         int unitX = width - unitWidth - 10;
 
-        Supplier<Integer> potencySource = EffectInfo.config()::getPotencyColor;
-        Consumer<Integer> potencyDest = EffectInfo.config()::setPotencyColor;
+        Supplier<Integer> colorSource = EffectInfo.config()::getPotencyColor;
+        Consumer<Integer> colorDest = EffectInfo.config()::setPotencyColor;
 
         header = new AbstractListWidget.Entry.TextEntry(this, unitX, 0, unitWidth, unitHeight,
                 Component.literal("Potency Text Options"));
@@ -54,25 +55,33 @@ public class PotencyListWidget extends AbstractListWidget  {
                 new Integer[]{0, 1, 3, 2},
                 (value) -> EffectInfo.config().potencyLocation = value);
         colorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
-                (color) -> potencyDest.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(potencySource.get()))));
+                (color) -> colorDest.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(colorSource.get()))));
         alphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Alpha: ", potencySource, (alpha) ->
-                potencyDest.accept(withAlpha.applyAsInt(potencySource.get(), alpha)), toAlpha, fromAlpha);
+                "Alpha: ", colorSource, (alpha) ->
+                colorDest.accept(withAlpha.applyAsInt(colorSource.get(), alpha)), toAlpha, fromAlpha);
         redSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Red: ", potencySource, (red) ->
-                potencyDest.accept(withRed.applyAsInt(potencySource.get(), red)), toRed, fromRed);
+                "Red: ", colorSource, (red) ->
+                colorDest.accept(withRed.applyAsInt(colorSource.get(), red)), toRed, fromRed);
         greenSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Green: ", potencySource, (green) ->
-                potencyDest.accept(withGreen.applyAsInt(potencySource.get(), green)), toGreen, fromGreen);
+                "Green: ", colorSource, (green) ->
+                colorDest.accept(withGreen.applyAsInt(colorSource.get(), green)), toGreen, fromGreen);
         blueSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Blue: ", potencySource, (blue) ->
-                potencyDest.accept(withBlue.applyAsInt(potencySource.get(), blue)), toBlue, fromBlue);
+                "Blue: ", colorSource, (blue) ->
+                colorDest.accept(withBlue.applyAsInt(colorSource.get(), blue)), toBlue, fromBlue);
+
+        Supplier<Integer> bgColorSource = EffectInfo.config()::getPotencyBgColor;
+        Consumer<Integer> bgColorDest = EffectInfo.config()::setPotencyBgColor;
+        bgAlphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+                "Background Alpha: ", bgColorSource, (alpha) ->
+                bgColorDest.accept(withAlpha.applyAsInt(bgColorSource.get(), alpha)), toAlpha, fromAlpha);
+
         resetButton = new AbstractListWidget.Entry.ActionButtonEntry(this, unitX, 0, unitWidth, unitHeight,
                 Component.literal("Reset"),
                 (button) -> {
                     EffectInfo.config().potencyEnabled = true;
                     EffectInfo.config().potencyLocation = Config.DEFAULT_POTENCY_LOCATION;
                     EffectInfo.config().potencyColor = Config.DEFAULT_COLOR;
+                    EffectInfo.config().potencyBgColor = Config.DEFAULT_BG_COLOR;
                     reload();
                 });
 
@@ -84,6 +93,7 @@ public class PotencyListWidget extends AbstractListWidget  {
         addEntry(redSlider);
         addEntry(greenSlider);
         addEntry(blueSlider);
+        addEntry(bgAlphaSlider);
         addEntry(resetButton);
     }
 
