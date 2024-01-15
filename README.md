@@ -29,4 +29,4 @@ and [CrimsonEdgeHope](https://github.com/CrimsonEdgeHope)
 
 [![Discord](https://img.shields.io/discord/1103153365216669797?logo=discord&label=Discord&color=%235865F2)](https://discord.gg/sSgQ9AF4mU)
 
-[![GitHub Issues](https://img.shields.io/github/issues/NotRyken/EffectInfo?logo=github&label=Issues)](https://github.com/NotRyken/ChatNotify/issues)
+[![GitHub Issues](https://img.shields.io/github/issues/NotRyken/EffectInfo?logo=github&label=Issues)](https://github.com/NotRyken/EffectInfo/issues)
