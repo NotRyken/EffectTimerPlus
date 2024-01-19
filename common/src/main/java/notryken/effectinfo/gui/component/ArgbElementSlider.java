@@ -9,14 +9,14 @@ import java.util.function.Consumer;
 import java.util.function.IntUnaryOperator;
 import java.util.function.Supplier;
 
-public class RgbaElementSlider extends AbstractSliderButton {
+public class ArgbElementSlider extends AbstractSliderButton {
     private final String label;
     private final Supplier<Integer> source; // Slider value source function
     private final Consumer<Integer> dest; // Slider value destination function
     private final IntUnaryOperator toChannel;
     private final IntUnaryOperator fromChannel;
 
-    public RgbaElementSlider(int x, int y, int width, int height, String label,
+    public ArgbElementSlider(int x, int y, int width, int height, String label,
                              Supplier<Integer> source, Consumer<Integer> dest,
                              IntUnaryOperator toChannel, IntUnaryOperator fromChannel) {
         super(x, y, width, height, Component.empty(), toChannel.applyAsInt(source.get()) / 255d);

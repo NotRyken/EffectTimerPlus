@@ -75,22 +75,22 @@ public class TimerListWidget extends AbstractListWidget  {
                 (value) -> EffectInfo.config().setTimerLocation(value));
         colorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
                 (color) -> colorDest.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(colorSource.get()))));
-        alphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        alphaSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Opacity: ", colorSource, (alpha) ->
                 colorDest.accept(withAlpha.applyAsInt(colorSource.get(), alpha)), toAlpha, fromAlpha);
-        redSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        redSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Red: ", colorSource, (red) ->
                 colorDest.accept(withRed.applyAsInt(colorSource.get(), red)), toRed, fromRed);
-        greenSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        greenSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Green: ", colorSource, (green) ->
                 colorDest.accept(withGreen.applyAsInt(colorSource.get(), green)), toGreen, fromGreen);
-        blueSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        blueSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Blue: ", colorSource, (blue) ->
                 colorDest.accept(withBlue.applyAsInt(colorSource.get(), blue)), toBlue, fromBlue);
 
         Supplier<Integer> backColorSource = EffectInfo.config()::getTimerBackColor;
         Consumer<Integer> backColorDest = EffectInfo.config()::setTimerBackColor;
-        backAlphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        backAlphaSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Background Opacity: ", backColorSource, (alpha) ->
                 backColorDest.accept(withAlpha.applyAsInt(backColorSource.get(), alpha)), toAlpha, fromAlpha);
 
@@ -106,16 +106,16 @@ public class TimerListWidget extends AbstractListWidget  {
                 (value) -> EffectInfo.config().timerFlashEnabled = value);
         warnColorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
                 (color) -> warnColorDest.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(warnColorSource.get()))));
-        warnAlphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        warnAlphaSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Opacity: ", warnColorSource, (alpha) ->
                 warnColorDest.accept(withAlpha.applyAsInt(warnColorSource.get(), alpha)), toAlpha, fromAlpha);
-        warnRedSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        warnRedSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Red: ", warnColorSource, (red) ->
                 warnColorDest.accept(withRed.applyAsInt(warnColorSource.get(), red)), toRed, fromRed);
-        warnGreenSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        warnGreenSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Green: ", warnColorSource, (green) ->
                 warnColorDest.accept(withGreen.applyAsInt(warnColorSource.get(), green)), toGreen, fromGreen);
-        warnBlueSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        warnBlueSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Blue: ", warnColorSource, (blue) ->
                 warnColorDest.accept(withBlue.applyAsInt(warnColorSource.get(), blue)), toBlue, fromBlue);
         warnTimeSlider = new Entry.WarnTimeSlider(this, unitX, 0, unitWidth, unitHeight);

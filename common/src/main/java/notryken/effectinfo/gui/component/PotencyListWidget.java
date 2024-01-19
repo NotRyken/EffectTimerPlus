@@ -64,22 +64,22 @@ public class PotencyListWidget extends AbstractListWidget  {
                 (value) -> EffectInfo.config().setPotencyLocation(value));
         colorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
                 (color) -> colorDest.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(colorSource.get()))));
-        alphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        alphaSlider = new Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Opacity: ", colorSource, (alpha) ->
                 colorDest.accept(withAlpha.applyAsInt(colorSource.get(), alpha)), toAlpha, fromAlpha);
-        redSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        redSlider = new Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Red: ", colorSource, (red) ->
                 colorDest.accept(withRed.applyAsInt(colorSource.get(), red)), toRed, fromRed);
-        greenSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        greenSlider = new Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Green: ", colorSource, (green) ->
                 colorDest.accept(withGreen.applyAsInt(colorSource.get(), green)), toGreen, fromGreen);
-        blueSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        blueSlider = new Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Blue: ", colorSource, (blue) ->
                 colorDest.accept(withBlue.applyAsInt(colorSource.get(), blue)), toBlue, fromBlue);
 
         Supplier<Integer> backColorSource = EffectInfo.config()::getPotencyBackColor;
         Consumer<Integer> backColorDest = EffectInfo.config()::setPotencyBackColor;
-        backAlphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+        backAlphaSlider = new Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Background Opacity: ", backColorSource, (alpha) ->
                 backColorDest.accept(withAlpha.applyAsInt(backColorSource.get(), alpha)), toAlpha, fromAlpha);
 

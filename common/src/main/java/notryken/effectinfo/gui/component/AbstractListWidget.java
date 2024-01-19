@@ -156,13 +156,13 @@ public abstract class AbstractListWidget extends ContainerObjectSelectionList<Ab
             }
         }
 
-        protected static class RgbaSliderEntry extends Entry {
-            RgbaElementSlider rgbaSlider;
-            public RgbaSliderEntry(AbstractListWidget list, int x, int y, int width, int height, String label,
+        protected static class ArgbSliderEntry extends Entry {
+            ArgbElementSlider rgbaSlider;
+            public ArgbSliderEntry(AbstractListWidget list, int x, int y, int width, int height, String label,
                                    Supplier<Integer>source, Consumer<Integer> dest,
                                    IntUnaryOperator toChannel, IntUnaryOperator fromChannel) {
                 super(list);
-                rgbaSlider = new RgbaElementSlider(x, y, width, height, label,
+                rgbaSlider = new ArgbElementSlider(x, y, width, height, label,
                         source, dest, toChannel, fromChannel);
                 elements.add(rgbaSlider);
             }
@@ -203,7 +203,7 @@ public abstract class AbstractListWidget extends ContainerObjectSelectionList<Ab
                             {
                                 dest.accept(color);
                                 for (Entry entry : list.children()) {
-                                    if (entry instanceof RgbaSliderEntry slider) {
+                                    if (entry instanceof ArgbSliderEntry slider) {
                                         slider.refresh();
                                     }
                                 }
