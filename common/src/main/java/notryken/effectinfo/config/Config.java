@@ -16,8 +16,8 @@ public class Config {
     public static final int DEFAULT_COLOR = -1761607681; // roughly 0x99FFFFFF
     public static final int DEFAULT_BG_COLOR = -1776213727;
     public static final int DEFAULT_WARN_COLOR = -65536; // max red, max alpha
-    public static final int DEFAULT_POTENCY_LOCATION = 1;
-    public static final int DEFAULT_COUNTDOWN_LOCATION = 2;
+    public static final int DEFAULT_POTENCY_LOCATION = 2;
+    public static final int DEFAULT_COUNTDOWN_LOCATION = 6;
 
     // Not saved, not user-accessible
     private static Path configPath;
@@ -117,6 +117,7 @@ public class Config {
         if (Files.exists(configPath)) {
             try (FileReader reader = new FileReader(configPath.toFile())) {
                 config = GSON.fromJson(reader, Config.class);
+                config.validate();
             } catch (IOException e) {
                 throw new RuntimeException("Could not parse config", e);
             }
@@ -152,5 +153,15 @@ public class Config {
             throw new RuntimeException("Couldn't update config file", e);
         }
 
+    }
+
+    // Not comprehensive (does not validate colors or time)
+    private void validate() {
+        if (potencyLocation < 0 || potencyLocation > 7) {
+            potencyLocation = DEFAULT_POTENCY_LOCATION;
+        }
+        if (countdownLocation < 0 || countdownLocation > 7) {
+            countdownLocation = DEFAULT_COUNTDOWN_LOCATION;
+        }
     }
 }

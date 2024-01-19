@@ -55,15 +55,24 @@ public class CountdownListWidget extends AbstractListWidget  {
                     case 0:
                         yield Component.literal("Top Left");
                     case 1:
-                        yield Component.literal("Top Right");
+                        yield Component.literal("Top Center");
                     case 2:
-                        yield Component.literal("Bottom Left");
+                        yield Component.literal("Top Right");
                     case 3:
+                        yield Component.literal("Center Right");
+                    case 4:
                         yield Component.literal("Bottom Right");
+                    case 5:
+                        yield Component.literal("Bottom Center");
+                    case 6:
+                        yield Component.literal("Bottom Left");
+                    case 7:
+                        yield Component.literal("Center Left");
                     default:
-                        throw new IllegalStateException("Unexpected value: " + value);
+                        throw new IllegalStateException(
+                                "Unexpected positional index outside of allowed range (0-7): " + value);
                 },
-                new Integer[]{0, 1, 3, 2},
+                new Integer[]{0, 1, 2, 3, 4, 5, 6, 7},
                 (value) -> EffectInfo.config().countdownLocation = value);
         colorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
                 (color) -> colorDest.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(colorSource.get()))));

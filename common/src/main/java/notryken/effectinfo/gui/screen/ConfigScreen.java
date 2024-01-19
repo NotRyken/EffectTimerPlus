@@ -6,20 +6,14 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import notryken.effectinfo.EffectInfo;
 import notryken.effectinfo.gui.component.CountdownListWidget;
 import notryken.effectinfo.gui.component.PotencyListWidget;
-import notryken.effectinfo.mixin.MixinGui;
 import notryken.effectinfo.util.Util;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
-
-import java.util.List;
 
 public class ConfigScreen extends OptionsSubScreen {
 
@@ -101,25 +95,26 @@ public class ConfigScreen extends OptionsSubScreen {
             graphics.blitSprite(Gui.EFFECT_BACKGROUND_SPRITE, x, y, 24, 24);
             graphics.blit(x + 3, y + 3, 0, 18, 18, minecraft.getMobEffectTextures().get(effect.getEffect()));
 
-            int pLoc = EffectInfo.config().potencyLocation;
-            int cLoc = EffectInfo.config().countdownLocation;
-            String pStr = Util.getAmplifierAsString(effect.getAmplifier());
             String cStr = Util.getDurationAsString(effect.getDuration());
 
             if (EffectInfo.config().potencyEnabled && effect.getAmplifier() > 0) {
-                int pX = pLoc % 2 == 0 ? x + 3 : x + 22 - minecraft.font.width(pStr);
-                int pY = pLoc < 2 ? y + 3 : y + 14;
-                graphics.fill(pX, pY, pX + minecraft.font.width(pStr), pY + minecraft.font.lineHeight - 1,
+                String label = Util.getAmplifierAsString(effect.getAmplifier());
+                int labelWidth = minecraft.font.width(label);
+                int pX = x + Util.getTextOffsetX(EffectInfo.config().potencyLocation, labelWidth);
+                int pY = y + Util.getTextOffsetY(EffectInfo.config().potencyLocation);
+                graphics.fill(pX, pY, pX + labelWidth, pY + minecraft.font.lineHeight - 1,
                         EffectInfo.config().potencyBgColor);
-                graphics.drawString(minecraft.font, pStr, pX, pY, EffectInfo.config().potencyColor, false);
+                graphics.drawString(minecraft.font, label, pX, pY, EffectInfo.config().potencyColor, false);
             }
             if (EffectInfo.config().countdownEnabled && (EffectInfo.config().ambientCountdownEnabled || !effect.isAmbient())) {
-                int pX = cLoc % 2 == 0 ? x + 3 : x + 22 - minecraft.font.width(cStr);
-                int pY = cLoc < 2 ? y + 3 : y + 14;
-                int color = Util.getColor(effect);
-                graphics.fill(pX, pY, pX + minecraft.font.width(cStr), pY + minecraft.font.lineHeight - 1,
+                String label = Util.getDurationAsString(effect.getDuration());
+                int labelWidth = minecraft.font.width(label);
+                int pX = x + Util.getTextOffsetX(EffectInfo.config().countdownLocation, labelWidth);
+                int pY = y + Util.getTextOffsetY(EffectInfo.config().countdownLocation);
+                int color = Util.getCountdownColor(effect);
+                graphics.fill(pX, pY, pX + labelWidth, pY + minecraft.font.lineHeight - 1,
                         EffectInfo.config().countdownBgColor);
-                graphics.drawString(minecraft.font, cStr, pX, pY, color, false);
+                graphics.drawString(minecraft.font, label, pX, pY, color, false);
             }
             x += xSpace;
         }
