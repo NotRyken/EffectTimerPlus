@@ -17,13 +17,13 @@ with EffectInfo. If not, see <https://www.gnu.org/licenses/>.
 
 EffectInfo includes derivative work of code from the following projects;
 
-Project: Status Effect Timer
-License: LGPL-3.0-only
-Source: <https://github.com/magicus/statuseffecttimer/>
-
 Project: Sodium
 License: LGPL-3.0-only
 Source: <https://github.com/CaffeineMC/sodium-fabric/>
+
+Project: Status Effect Timer
+License: LGPL-3.0-only
+Source: <https://github.com/magicus/statuseffecttimer/>
 
 ##############################################################################
 
