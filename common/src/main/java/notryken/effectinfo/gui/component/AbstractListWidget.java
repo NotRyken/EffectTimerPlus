@@ -20,24 +20,6 @@ import java.util.function.*;
  * {@code PotencyListWidget} and {@code TimerListWidget}.
  */
 public abstract class AbstractListWidget extends ContainerObjectSelectionList<AbstractListWidget.Entry> {
-    // RGBA color utils
-    protected final IntUnaryOperator toAlpha = (value) -> (value >> 24 & 255);
-    protected final IntUnaryOperator toRed = (value) -> (value >> 16 & 255);
-    protected final IntUnaryOperator toGreen = (value) -> (value >> 8 & 255);
-    protected final IntUnaryOperator toBlue = (value) -> (value & 255);
-    protected final IntUnaryOperator fromAlpha = (value) -> (value * 16777216);
-    protected final IntUnaryOperator fromRed = (value) -> (value * 65536);
-    protected final IntUnaryOperator fromGreen = (value) -> (value * 256);
-    protected final IntUnaryOperator fromBlue = (value) -> (value);
-    protected final IntBinaryOperator withAlpha = (value, alpha) ->
-            ((alpha * 16777216) + value - (value >> 24 & 255) * 16777216);
-    protected final IntBinaryOperator withRed = (value, red) ->
-            ((red * 65536) + value - (value >> 16 & 255) * 65536);
-    protected final IntBinaryOperator withGreen = (value, green) ->
-            ((green * 256) + value - (value >> 8 & 255) * 256);
-    protected final IntBinaryOperator withBlue = (value, blue) ->
-            ((blue) + value - (value & 255));
-
 
     protected final ConfigScreen parent;
 

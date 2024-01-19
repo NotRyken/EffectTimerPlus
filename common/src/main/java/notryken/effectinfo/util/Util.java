@@ -4,7 +4,28 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.world.effect.MobEffectInstance;
 import notryken.effectinfo.EffectInfo;
 
+import java.util.function.IntBinaryOperator;
+import java.util.function.IntUnaryOperator;
+
 public class Util {
+
+    // RGBA color utils
+    public static final IntUnaryOperator toAlpha = (value) -> (value >> 24 & 255);
+    public static final IntUnaryOperator toRed = (value) -> (value >> 16 & 255);
+    public static final IntUnaryOperator toGreen = (value) -> (value >> 8 & 255);
+    public static final IntUnaryOperator toBlue = (value) -> (value & 255);
+    public static final IntUnaryOperator fromAlpha = (value) -> (value * 16777216);
+    public static final IntUnaryOperator fromRed = (value) -> (value * 65536);
+    public static final IntUnaryOperator fromGreen = (value) -> (value * 256);
+    public static final IntUnaryOperator fromBlue = (value) -> (value);
+    public static final IntBinaryOperator withAlpha = (value, alpha) ->
+            ((alpha * 16777216) + value - (value >> 24 & 255) * 16777216);
+    public static final IntBinaryOperator withRed = (value, red) ->
+            ((red * 65536) + value - (value >> 16 & 255) * 65536);
+    public static final IntBinaryOperator withGreen = (value, green) ->
+            ((green * 256) + value - (value >> 8 & 255) * 256);
+    public static final IntBinaryOperator withBlue = (value, blue) ->
+            ((blue) + value - (value & 255));
 
     /**
      * @param effectInstance the {@code MobEffectInstance} to get color for.
