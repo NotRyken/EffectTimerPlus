@@ -11,25 +11,29 @@
 
 Adds a potency indicator and countdown overlay to status effect icons.
 
-Based on [StatusEffectTimer](https://github.com/magicus/statuseffecttimer) by [magicus](https://github.com/magicus/) 
-and [CrimsonEdgeHope](https://github.com/CrimsonEdgeHope)
+EffectInfo is a functional expansion of [Status Effect Timer](https://modrinth.com/mod/statuseffecttimer), with a 
+focus on customization.
 
 </center></div>
 
-### Showcase
+### Features
+
+- Fully customizable text color and opacity
+- Adjustable text background
+- 8 options for text position
+- Optional low-time warning color and flash
+- Option to disable either indicator separately
+- Option to hide timer on ambient (beacon) effects
+- Convenient configurability using a custom GUI 
+  - Access using [ModMenu](https://modrinth.com/mod/modmenu/) on Fabric/Quilt
 
 <img alt="Showcase" src="https://i.postimg.cc/C1vDrKVN/effectinfo-showcase.png" width="637">
-
-### Configuration
-
-- Access the config screen via the mod list ([ModMenu](https://modrinth.com/mod/modmenu/) required on Fabric/Quilt).
-- Text color, opacity and position can be adjusted, and both indicators can be switched on or off separately.
 
 ### Credits
 
 - EffectInfo includes derivative work of code from the following projects:
-  - [Status Effect Timer](https://github.com/magicus/statuseffecttimer/)
   - [Sodium](https://github.com/CaffeineMC/sodium-fabric/)
+  - [Status Effect Timer](https://github.com/magicus/statuseffecttimer/)
 
 ### License
 
