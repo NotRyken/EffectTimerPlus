@@ -77,7 +77,7 @@ public class CountdownListWidget extends AbstractListWidget  {
         colorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
                 (color) -> colorDest.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(colorSource.get()))));
         alphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Alpha: ", colorSource, (alpha) ->
+                "Opacity: ", colorSource, (alpha) ->
                 colorDest.accept(withAlpha.applyAsInt(colorSource.get(), alpha)), toAlpha, fromAlpha);
         redSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Red: ", colorSource, (red) ->
@@ -102,7 +102,7 @@ public class CountdownListWidget extends AbstractListWidget  {
         warnColorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
                 (color) -> warnColorDest.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(warnColorSource.get()))));
         warnAlphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Alpha: ", warnColorSource, (alpha) ->
+                "Opacity: ", warnColorSource, (alpha) ->
                 warnColorDest.accept(withAlpha.applyAsInt(warnColorSource.get(), alpha)), toAlpha, fromAlpha);
         warnRedSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Red: ", warnColorSource, (red) ->

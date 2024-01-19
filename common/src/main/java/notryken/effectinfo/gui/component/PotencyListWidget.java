@@ -66,7 +66,7 @@ public class PotencyListWidget extends AbstractListWidget  {
         colorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
                 (color) -> colorDest.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(colorSource.get()))));
         alphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Alpha: ", colorSource, (alpha) ->
+                "Opacity: ", colorSource, (alpha) ->
                 colorDest.accept(withAlpha.applyAsInt(colorSource.get(), alpha)), toAlpha, fromAlpha);
         redSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Red: ", colorSource, (red) ->
