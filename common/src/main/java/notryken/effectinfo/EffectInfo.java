@@ -10,6 +10,7 @@ public class EffectInfo {
     public static final String MOD_NAME = "EffectInfo";
     public static final Logger LOG = LoggerFactory.getLogger(MOD_NAME);
 
+    // Config management
     private static Config CONFIG;
 
     public static void init() {
@@ -28,15 +29,14 @@ public class EffectInfo {
             return Config.load();
         } catch (Exception e) {
             LOG.error("Failed to load configuration file", e);
-            LOG.error("Using default configuration file");
-            Config newConfig = new Config();
-            newConfig.writeChanges();
-            return newConfig;
+            LOG.error("Reverting to default configuration");
+            return restoreDefaultConfig();
         }
     }
 
-    public static void restoreDefaultConfig() {
+    public static Config restoreDefaultConfig() {
         CONFIG = new Config();
         CONFIG.writeChanges();
+        return CONFIG;
     }
 }

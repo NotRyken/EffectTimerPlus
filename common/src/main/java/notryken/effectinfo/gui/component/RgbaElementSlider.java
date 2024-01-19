@@ -28,6 +28,11 @@ public class RgbaElementSlider extends AbstractSliderButton {
         updateMessage();
     }
 
+    public void refresh() {
+        value = toChannel.applyAsInt(source.get()) / 255d;
+        updateMessage();
+    }
+
     @Override
     protected void updateMessage() {
         int scaledValue = (int)(value * 255 + 0.5);

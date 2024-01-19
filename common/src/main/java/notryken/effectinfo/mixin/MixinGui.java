@@ -28,10 +28,11 @@ public class MixinGui {
 
     @Inject(method = "renderEffects", at = @At("TAIL"))
     private void renderDurationOverlay(GuiGraphics graphics, CallbackInfo ci) {
+
+        // Replicate vanilla placement algorithm to place labels correctly
         Collection<MobEffectInstance> effects = this.minecraft.player.getActiveEffects();
         if (!effects.isEmpty()) {
 
-            // Replicate vanilla placement algorithm to place labels correctly
             int beneficialCount = 0;
             int nonBeneficialCount = 0;
 
@@ -53,24 +54,26 @@ public class MixinGui {
                         y += 26;
                     }
 
+                    // Render potency overlay
                     if (EffectInfo.config().potencyEnabled && effectInstance.getAmplifier() > 0) {
-                        String amplifierStr = Util.getAmplifierAsString(effectInstance.getAmplifier());
-                        int amplifierLen = minecraft.font.width(amplifierStr);
-                        int pX = x + Util.getTextOffsetX(EffectInfo.config().potencyLocation, amplifierLen);
-                        int pY = y + Util.getTextOffsetY(EffectInfo.config().potencyLocation);
-                        graphics.fill(pX, pY, pX + amplifierLen, pY + minecraft.font.lineHeight - 1,
-                                EffectInfo.config().potencyBgColor);
-                        graphics.drawString(minecraft.font, amplifierStr, pX, pY, EffectInfo.config().potencyColor, false);
+                        String label = Util.getAmplifierAsString(effectInstance.getAmplifier());
+                        int labelWidth = minecraft.font.width(label);
+                        int posX = x + Util.getTextOffsetX(EffectInfo.config().getPotencyLocation(), labelWidth);
+                        int posY = y + Util.getTextOffsetY(EffectInfo.config().getPotencyLocation());
+                        graphics.fill(posX, posY, posX + labelWidth, posY + minecraft.font.lineHeight - 1,
+                                EffectInfo.config().getPotencyBackColor());
+                        graphics.drawString(minecraft.font, label, posX, posY, EffectInfo.config().getPotencyColor(), false);
                     }
-                    if (EffectInfo.config().countdownEnabled && (EffectInfo.config().ambientCountdownEnabled || !effectInstance.isAmbient())) {
-                        String durationStr = Util.getDurationAsString(effectInstance.getDuration());
-                        int durationLen = minecraft.font.width(durationStr);
-                        int pX = x + Util.getTextOffsetX(EffectInfo.config().countdownLocation, durationLen);
-                        int pY = y + Util.getTextOffsetY(EffectInfo.config().countdownLocation);
-                        graphics.fill(pX, pY, pX + durationLen, pY + minecraft.font.lineHeight - 1,
-                                EffectInfo.config().countdownBgColor);
-                        int color = Util.getCountdownColor(effectInstance);
-                        graphics.drawString(minecraft.font, durationStr, pX, pY, color, false);
+                    // Render timer overlay
+                    if (EffectInfo.config().timerEnabled && (EffectInfo.config().timerEnabledAmbient || !effectInstance.isAmbient())) {
+                        String label = Util.getDurationAsString(effectInstance.getDuration());
+                        int labelWidth = minecraft.font.width(label);
+                        int posX = x + Util.getTextOffsetX(EffectInfo.config().getTimerLocation(), labelWidth);
+                        int posY = y + Util.getTextOffsetY(EffectInfo.config().getTimerLocation());
+                        graphics.fill(posX, posY, posX + labelWidth, posY + minecraft.font.lineHeight - 1,
+                                EffectInfo.config().getTimerBackColor());
+                        int color = Util.getTimerColor(effectInstance);
+                        graphics.drawString(minecraft.font, label, posX, posY, color, false);
                     }
                 }
             }

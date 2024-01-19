@@ -11,20 +11,21 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import notryken.effectinfo.EffectInfo;
-import notryken.effectinfo.gui.component.CountdownListWidget;
+import notryken.effectinfo.gui.component.TimerListWidget;
 import notryken.effectinfo.gui.component.PotencyListWidget;
 import notryken.effectinfo.util.Util;
 
 public class ConfigScreen extends OptionsSubScreen {
 
-    private final int minX = this.width / 2 - 155;
-    private final int minY = this.height / 6 - 12;
-    private final int unitWidth = 150;
-    private final int unitHeight = 20;
-    private final int unitSpacing = 10;
+    // Dimensional constants
+    private final int MIN_X = this.width / 2 - 155;
+    private final int MIN_Y = this.height / 6 - 12;
+    private final int ITEM_WIDTH = 150;
+    private final int ITEM_HEIGHT = 20;
 
-    // effect, duration, amplifier, ambient, visible
-    private final MobEffectInstance[] effects = new MobEffectInstance[] {
+    // Demo set of effects
+    // Params: effect, duration, amplifier, ambient, visible
+    private final MobEffectInstance[] DEMO_EFFECTS = new MobEffectInstance[] {
             new MobEffectInstance(MobEffects.DIG_SPEED, 111, 1, true, true),
             new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 211, 1, true, true),
             new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 411, 2, false, true),
@@ -38,8 +39,8 @@ public class ConfigScreen extends OptionsSubScreen {
     };
 
     // GUI elements
-    private PotencyListWidget potencyList;
-    private CountdownListWidget countdownList;
+    private PotencyListWidget potencyOptionsList;
+    private TimerListWidget timerOptionsList;
     private Button resetButton;
     private Button doneButton;
 
@@ -49,19 +50,23 @@ public class ConfigScreen extends OptionsSubScreen {
                 Component.translatable("screen.effectinfo.title.default"));
     }
 
+    public void reload() {
+        Minecraft.getInstance().setScreen(new ConfigScreen(lastScreen));
+    }
+
     @Override
     protected void init() {
 
-        int paneTopY = minY + 65;
+        int paneTopY = MIN_Y + 65;
         int paneHeight = height - paneTopY - 36;
         int paneWidth = width / 2 - 8;
         int rightPaneX = width - paneWidth;
 
-        potencyList = new PotencyListWidget(minecraft, paneWidth, paneHeight, paneTopY, 20, this);
-        potencyList.setX(0);
+        potencyOptionsList = new PotencyListWidget(minecraft, paneWidth, paneHeight, paneTopY, ITEM_HEIGHT, this);
+        potencyOptionsList.setX(0);
 
-        countdownList = new CountdownListWidget(minecraft, paneWidth, paneHeight, paneTopY, 20, this);
-        countdownList.setX(rightPaneX);
+        timerOptionsList = new TimerListWidget(minecraft, paneWidth, paneHeight, paneTopY, ITEM_HEIGHT, this);
+        timerOptionsList.setX(rightPaneX);
 
         resetButton = Button.builder(Component.literal("Reset All"), (button) -> {
             EffectInfo.restoreDefaultConfig();
@@ -76,8 +81,8 @@ public class ConfigScreen extends OptionsSubScreen {
                 .size(150, 20)
                 .build();
 
-        addRenderableWidget(potencyList);
-        addRenderableWidget(countdownList);
+        addRenderableWidget(potencyOptionsList);
+        addRenderableWidget(timerOptionsList);
         addRenderableWidget(resetButton);
         addRenderableWidget(doneButton);
     }
@@ -87,34 +92,34 @@ public class ConfigScreen extends OptionsSubScreen {
         super.render(graphics, mouseX, mouseY, delta);
         graphics.drawCenteredString(font, title, width / 2, 15, 16777215);
 
-        int xSpace = 27;
-        int x = width / 2 - effects.length * xSpace / 2;
-        int y = minY + 40; // Icon placement corner is bottom left
+        // Render demo status effect icons
+        int xSpace = 27; // Icon spacing
+        int x = width / 2 - DEMO_EFFECTS.length * xSpace / 2;
+        int y = MIN_Y + 40; // Icon placement reference point is bottom left
 
-        for (MobEffectInstance effect : effects) {
+        for (MobEffectInstance effect : DEMO_EFFECTS) {
             graphics.blitSprite(Gui.EFFECT_BACKGROUND_SPRITE, x, y, 24, 24);
             graphics.blit(x + 3, y + 3, 0, 18, 18, minecraft.getMobEffectTextures().get(effect.getEffect()));
 
-            String cStr = Util.getDurationAsString(effect.getDuration());
-
+            // Render potency overlay
             if (EffectInfo.config().potencyEnabled && effect.getAmplifier() > 0) {
                 String label = Util.getAmplifierAsString(effect.getAmplifier());
                 int labelWidth = minecraft.font.width(label);
-                int pX = x + Util.getTextOffsetX(EffectInfo.config().potencyLocation, labelWidth);
-                int pY = y + Util.getTextOffsetY(EffectInfo.config().potencyLocation);
+                int pX = x + Util.getTextOffsetX(EffectInfo.config().getPotencyLocation(), labelWidth);
+                int pY = y + Util.getTextOffsetY(EffectInfo.config().getPotencyLocation());
                 graphics.fill(pX, pY, pX + labelWidth, pY + minecraft.font.lineHeight - 1,
-                        EffectInfo.config().potencyBgColor);
-                graphics.drawString(minecraft.font, label, pX, pY, EffectInfo.config().potencyColor, false);
+                        EffectInfo.config().getPotencyBackColor());
+                graphics.drawString(minecraft.font, label, pX, pY, EffectInfo.config().getPotencyColor(), false);
             }
-            if (EffectInfo.config().countdownEnabled && (EffectInfo.config().ambientCountdownEnabled || !effect.isAmbient())) {
+            // Render timer overlay
+            if (EffectInfo.config().timerEnabled && (EffectInfo.config().timerEnabledAmbient || !effect.isAmbient())) {
                 String label = Util.getDurationAsString(effect.getDuration());
                 int labelWidth = minecraft.font.width(label);
-                int pX = x + Util.getTextOffsetX(EffectInfo.config().countdownLocation, labelWidth);
-                int pY = y + Util.getTextOffsetY(EffectInfo.config().countdownLocation);
-                int color = Util.getCountdownColor(effect);
+                int pX = x + Util.getTextOffsetX(EffectInfo.config().getTimerLocation(), labelWidth);
+                int pY = y + Util.getTextOffsetY(EffectInfo.config().getTimerLocation());
                 graphics.fill(pX, pY, pX + labelWidth, pY + minecraft.font.lineHeight - 1,
-                        EffectInfo.config().countdownBgColor);
-                graphics.drawString(minecraft.font, label, pX, pY, color, false);
+                        EffectInfo.config().getTimerBackColor());
+                graphics.drawString(minecraft.font, label, pX, pY, Util.getTimerColor(effect), false);
             }
             x += xSpace;
         }
@@ -129,9 +134,5 @@ public class ConfigScreen extends OptionsSubScreen {
     public void onClose() {
         EffectInfo.config().writeChanges();
         super.onClose();
-    }
-
-    public void reload() {
-        Minecraft.getInstance().setScreen(new ConfigScreen(lastScreen));
     }
 }

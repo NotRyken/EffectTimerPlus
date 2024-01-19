@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.*;
 
+/**
+ * Abstract list widget used to factor out common code between
+ * {@code PotencyListWidget} and {@code TimerListWidget}.
+ */
 public abstract class AbstractListWidget extends ContainerObjectSelectionList<AbstractListWidget.Entry> {
     // RGBA color utils
     protected final IntUnaryOperator toAlpha = (value) -> (value >> 24 & 255);
@@ -34,12 +38,17 @@ public abstract class AbstractListWidget extends ContainerObjectSelectionList<Ab
     protected final IntBinaryOperator withBlue = (value, blue) ->
             ((blue) + value - (value & 255));
 
+
     protected final ConfigScreen parent;
 
     public AbstractListWidget(Minecraft minecraft, int width, int height, int y, int itemHeight,
                               ConfigScreen parent) {
         super(minecraft, width, height, y, itemHeight);
         this.parent = parent;
+    }
+
+    protected void reload() {
+        parent.reload();
     }
 
     @Override
@@ -52,17 +61,15 @@ public abstract class AbstractListWidget extends ContainerObjectSelectionList<Ab
         return this.width - 6 + this.getX();
     }
 
-    protected void reload() {
-        parent.reload();
-    }
-
+    /**
+     * List entries used by {@code PotencyListWidget} and
+     * {@code TimerListWidget}.
+     */
     protected abstract static class Entry extends ContainerObjectSelectionList.Entry<Entry> {
-        protected final Minecraft minecraft;
         protected final AbstractListWidget list;
         protected final List<AbstractWidget> elements;
 
         public Entry(AbstractListWidget list) {
-            this.minecraft = Minecraft.getInstance();
             this.list = list;
             this.elements = new ArrayList<>();
         }
@@ -150,18 +157,23 @@ public abstract class AbstractListWidget extends ContainerObjectSelectionList<Ab
         }
 
         protected static class RgbaSliderEntry extends Entry {
+            RgbaElementSlider rgbaSlider;
             public RgbaSliderEntry(AbstractListWidget list, int x, int y, int width, int height, String label,
                                    Supplier<Integer>source, Consumer<Integer> dest,
                                    IntUnaryOperator toChannel, IntUnaryOperator fromChannel) {
                 super(list);
-                RgbaElementSlider rgbaSlider = new RgbaElementSlider(x, y, width, height, label,
+                rgbaSlider = new RgbaElementSlider(x, y, width, height, label,
                         source, dest, toChannel, fromChannel);
                 elements.add(rgbaSlider);
+            }
+
+            public void refresh() {
+                rgbaSlider.refresh();
             }
         }
 
         protected static class ColorSelectionSet extends Entry {
-            int[] quickColors = new int[] {
+            int[] colors = new int[] {
                     10027008,
                     16711680,
                     16753920,
@@ -182,16 +194,19 @@ public abstract class AbstractListWidget extends ContainerObjectSelectionList<Ab
             public ColorSelectionSet(AbstractListWidget list, int x, int y, int width, Consumer<Integer> dest) {
                 super(list);
 
-                int buttonWidth = width / quickColors.length;
-                for (int i = 0; i < quickColors.length; i++) {
-                    int color = quickColors[i];
-                    int setX = x + (width / 2) - (buttonWidth * quickColors.length / 2);
+                int buttonWidth = width / colors.length;
+                for (int i = 0; i < colors.length; i++) {
+                    int color = colors[i];
+                    int setX = x + (width / 2) - (buttonWidth * colors.length / 2);
                     elements.add(Button.builder(Component.literal("\u2588")
                                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(color))), (button) ->
                             {
                                 dest.accept(color);
-                                list.reload();
-                                // FIXME or refresh possibly need list of entries in AbstractListWidget
+                                for (Entry entry : list.children()) {
+                                    if (entry instanceof RgbaSliderEntry slider) {
+                                        slider.refresh();
+                                    }
+                                }
                             })
                             .pos(setX + (buttonWidth * i), y)
                             .size(buttonWidth, buttonWidth)

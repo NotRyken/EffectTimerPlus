@@ -5,18 +5,30 @@ import net.minecraft.world.effect.MobEffectInstance;
 import notryken.effectinfo.EffectInfo;
 
 public class Util {
-    public static int getCountdownColor(MobEffectInstance effectInstance) {
-        int color = EffectInfo.config().countdownColor;
-        if (EffectInfo.config().countdownWarnEnabled
+
+    /**
+     * @param effectInstance the {@code MobEffectInstance} to get color for.
+     * @return the color as defined by mod configuration.
+     */
+    public static int getTimerColor(MobEffectInstance effectInstance) {
+        int color = EffectInfo.config().getTimerColor();
+        if (EffectInfo.config().timerWarnEnabled
                 && effectInstance.getDuration() != MobEffectInstance.INFINITE_DURATION
-                && effectInstance.getDuration() / 20 <= EffectInfo.config().countdownWarnTime
-                && (!EffectInfo.config().countdownFlashEnabled
+                && effectInstance.getDuration() / 20 <= EffectInfo.config().getTimerWarnTime()
+                && (!EffectInfo.config().timerFlashEnabled
                 || effectInstance.getDuration() % 20 >= 10)) {
-            color = EffectInfo.config().getWarnColor();
+            color = EffectInfo.config().getTimerWarnColor();
         }
         return color;
     }
 
+    /**
+     * Converts an amplifier number into a Roman numeral {@code String}, if
+     * possible.
+     * @param amplifier the amplifier number.
+     * @return a {@code String} representing the number, or an empty
+     * {@code String} if the number is invalid.
+     */
     public static String getAmplifierAsString(int amplifier) {
         int value = amplifier + 1;
         if (value > 1) {
@@ -30,6 +42,11 @@ public class Util {
         return "";
     }
 
+    /**
+     * Converts a duration in ticks to a readable approximation.
+     * @param durationTicks the duration, in ticks.
+     * @return a {@code String} representing the duration.
+     */
     public static String getDurationAsString(int durationTicks) {
         if(durationTicks == MobEffectInstance.INFINITE_DURATION) {
             return "\u221e";
@@ -49,6 +66,14 @@ public class Util {
         }
     }
 
+    /**
+     * Determines the X offset for a {@code String} of the given width to be
+     * drawn over a status effect icon, based on the given positional index.
+     * @param locIndex the positional index (0-7).
+     * @param labelWidth the width of the {@code String} to be rendered.
+     * @return the X-axis offset.
+     * @throws IllegalStateException if the given index is invalid.
+     */
     public static int getTextOffsetX(int locIndex, int labelWidth) {
         return switch (locIndex) {
             case 0, 6, 7 -> 3;
@@ -59,6 +84,13 @@ public class Util {
         };
     }
 
+    /**
+     * Determines the Y offset for a {@code String} to be drawn over a status
+     * effect icon, based on the given positional index.
+     * @param locIndex the positional index (0-7).
+     * @return the Y-axis offset.
+     * @throws IllegalStateException if the given index is invalid.
+     */
     public static int getTextOffsetY(int locIndex) {
         return switch (locIndex) {
             case 0, 1, 2 -> 3;

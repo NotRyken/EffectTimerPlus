@@ -3,7 +3,6 @@ package notryken.effectinfo.gui.component;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import notryken.effectinfo.EffectInfo;
-import notryken.effectinfo.config.Config;
 import notryken.effectinfo.gui.screen.ConfigScreen;
 
 import java.util.function.Consumer;
@@ -19,7 +18,7 @@ public class PotencyListWidget extends AbstractListWidget  {
     protected AbstractListWidget.Entry redSlider;
     protected AbstractListWidget.Entry greenSlider;
     protected AbstractListWidget.Entry blueSlider;
-    protected AbstractListWidget.Entry bgAlphaSlider;
+    protected AbstractListWidget.Entry backAlphaSlider;
     protected AbstractListWidget.Entry resetButton;
 
 
@@ -39,7 +38,7 @@ public class PotencyListWidget extends AbstractListWidget  {
                 Component.literal("Display"), EffectInfo.config().potencyEnabled,
                 (value) -> EffectInfo.config().potencyEnabled = value);
         cornerButton = new AbstractListWidget.Entry.IntCycleButtonEntry(this, unitX, 0, unitWidth, unitHeight,
-                Component.literal("Location"), EffectInfo.config().potencyLocation, (value) ->
+                Component.literal("Location"), EffectInfo.config().getPotencyLocation(), (value) ->
                 switch(value) {
                     case 0:
                         yield Component.literal("Top Left");
@@ -62,7 +61,7 @@ public class PotencyListWidget extends AbstractListWidget  {
                                 "Unexpected positional index outside of allowed range (0-7): " + value);
                 },
                 new Integer[]{0, 1, 2, 3, 4, 5, 6, 7},
-                (value) -> EffectInfo.config().potencyLocation = value);
+                (value) -> EffectInfo.config().setPotencyLocation(value));
         colorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
                 (color) -> colorDest.accept(withAlpha.applyAsInt(color, toAlpha.applyAsInt(colorSource.get()))));
         alphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
@@ -78,19 +77,16 @@ public class PotencyListWidget extends AbstractListWidget  {
                 "Blue: ", colorSource, (blue) ->
                 colorDest.accept(withBlue.applyAsInt(colorSource.get(), blue)), toBlue, fromBlue);
 
-        Supplier<Integer> bgColorSource = EffectInfo.config()::getPotencyBgColor;
-        Consumer<Integer> bgColorDest = EffectInfo.config()::setPotencyBgColor;
-        bgAlphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Background Alpha: ", bgColorSource, (alpha) ->
-                bgColorDest.accept(withAlpha.applyAsInt(bgColorSource.get(), alpha)), toAlpha, fromAlpha);
+        Supplier<Integer> backColorSource = EffectInfo.config()::getPotencyBackColor;
+        Consumer<Integer> backColorDest = EffectInfo.config()::setPotencyBackColor;
+        backAlphaSlider = new AbstractListWidget.Entry.RgbaSliderEntry(this, unitX, 0, unitWidth, unitHeight,
+                "Background Opacity: ", backColorSource, (alpha) ->
+                backColorDest.accept(withAlpha.applyAsInt(backColorSource.get(), alpha)), toAlpha, fromAlpha);
 
         resetButton = new AbstractListWidget.Entry.ActionButtonEntry(this, unitX, 0, unitWidth, unitHeight,
                 Component.literal("Reset"),
                 (button) -> {
-                    EffectInfo.config().potencyEnabled = true;
-                    EffectInfo.config().potencyLocation = Config.DEFAULT_POTENCY_LOCATION;
-                    EffectInfo.config().potencyColor = Config.DEFAULT_COLOR;
-                    EffectInfo.config().potencyBgColor = Config.DEFAULT_BG_COLOR;
+                    EffectInfo.config().resetPotencyConfig();
                     reload();
                 });
 
@@ -102,13 +98,7 @@ public class PotencyListWidget extends AbstractListWidget  {
         addEntry(redSlider);
         addEntry(greenSlider);
         addEntry(blueSlider);
-        addEntry(bgAlphaSlider);
+        addEntry(backAlphaSlider);
         addEntry(resetButton);
-    }
-
-    protected abstract static class Entry extends AbstractListWidget.Entry {
-        public Entry(PotencyListWidget list) {
-            super(list);
-        }
     }
 }

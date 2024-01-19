@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class IntSlider extends AbstractSliderButton {
-
     private final int max;
     private final String labelPrefix;
     private final String labelSuffix;
@@ -22,6 +21,11 @@ public class IntSlider extends AbstractSliderButton {
         this.labelSuffix = labelSuffix;
         this.source = source;
         this.dest = dest;
+        updateMessage();
+    }
+
+    public void refresh() {
+        value = source.get() / (double)max;
         updateMessage();
     }
 
