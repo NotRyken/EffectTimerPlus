@@ -31,9 +31,9 @@ public class TimerListWidget extends AbstractListWidget  {
     protected AbstractListWidget.Entry resetButton;
 
 
-    public TimerListWidget(Minecraft minecraft, int width, int height, int top, int bottom,
+    public TimerListWidget(Minecraft minecraft, int width, int height, int y,
                            int itemHeight, ConfigScreen parent) {
-        super(minecraft, width, height, top, bottom, itemHeight, parent);
+        super(minecraft, width, height, y, itemHeight, parent);
 
         int unitWidth = 200;
         int unitHeight = 18;
@@ -151,7 +151,7 @@ public class TimerListWidget extends AbstractListWidget  {
 
     @Override
     protected int getScrollbarPosition() {
-        return this.width - 6 + x0;
+        return this.width - 6 + getX();
     }
 
     protected abstract static class Entry extends AbstractListWidget.Entry {
