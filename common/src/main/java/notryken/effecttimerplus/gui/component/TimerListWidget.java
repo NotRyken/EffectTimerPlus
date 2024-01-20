@@ -22,17 +22,18 @@ public class TimerListWidget extends AbstractListWidget  {
     protected AbstractListWidget.Entry backAlphaSlider;
     protected AbstractListWidget.Entry warnHeader;
     protected AbstractListWidget.Entry warnToggleButton;
+    protected AbstractListWidget.Entry warnTimeSlider;
     protected AbstractListWidget.Entry warnColorSelectionSet;
     protected AbstractListWidget.Entry warnAlphaSlider;
     protected AbstractListWidget.Entry warnRedSlider;
     protected AbstractListWidget.Entry warnGreenSlider;
     protected AbstractListWidget.Entry warnBlueSlider;
-    protected AbstractListWidget.Entry warnTimeSlider;
     protected AbstractListWidget.Entry resetButton;
 
 
-    public TimerListWidget(Minecraft minecraft, int width, int height, int y, int itemHeight, ConfigScreen parent) {
-        super(minecraft, width, height, y, itemHeight, parent);
+    public TimerListWidget(Minecraft minecraft, int width, int height, int top, int bottom,
+                           int itemHeight, ConfigScreen parent) {
+        super(minecraft, width, height, top, bottom, itemHeight, parent);
 
         int unitWidth = 200;
         int unitHeight = 18;
@@ -47,7 +48,7 @@ public class TimerListWidget extends AbstractListWidget  {
                 unitWidth, unitHeight,
                 Component.literal("Display"), EffectTimerPlus.config().timerEnabled,
                 (value) -> EffectTimerPlus.config().timerEnabled = value,
-                Component.literal("Ambient"), EffectTimerPlus.config().timerEnabledAmbient,
+                Component.literal("Beacon"), EffectTimerPlus.config().timerEnabledAmbient,
                 (value) -> EffectTimerPlus.config().timerEnabledAmbient = value);
         cornerButton = new AbstractListWidget.Entry.IntCycleButtonEntry(this, unitX, 0, unitWidth, unitHeight,
                 Component.literal("Location"), EffectTimerPlus.config().getTimerLocation(), (value) ->
@@ -105,6 +106,7 @@ public class TimerListWidget extends AbstractListWidget  {
                 (value) -> EffectTimerPlus.config().timerWarnEnabled = value,
                 Component.literal("Warn Flash"), EffectTimerPlus.config().timerFlashEnabled,
                 (value) -> EffectTimerPlus.config().timerFlashEnabled = value);
+        warnTimeSlider = new Entry.WarnTimeSlider(this, unitX, 0, unitWidth, unitHeight);
         warnColorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
                 (color) -> warnColorDest.accept(Util.withAlpha.applyAsInt(color, Util.toAlpha.applyAsInt(warnColorSource.get()))));
         warnAlphaSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
@@ -119,7 +121,6 @@ public class TimerListWidget extends AbstractListWidget  {
         warnBlueSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
                 "Blue: ", warnColorSource, (blue) ->
                 warnColorDest.accept(Util.withBlue.applyAsInt(warnColorSource.get(), blue)), Util.toBlue, Util.fromBlue);
-        warnTimeSlider = new Entry.WarnTimeSlider(this, unitX, 0, unitWidth, unitHeight);
 
         resetButton = new AbstractListWidget.Entry.ActionButtonEntry(this, unitX, 0, unitWidth, unitHeight,
                 Component.literal("Reset"),
@@ -139,13 +140,18 @@ public class TimerListWidget extends AbstractListWidget  {
         addEntry(backAlphaSlider);
         addEntry(warnHeader);
         addEntry(warnToggleButton);
+        addEntry(warnTimeSlider);
         addEntry(warnColorSelectionSet);
         addEntry(warnAlphaSlider);
         addEntry(warnRedSlider);
         addEntry(warnGreenSlider);
         addEntry(warnBlueSlider);
-        addEntry(warnTimeSlider);
         addEntry(resetButton);
+    }
+
+    @Override
+    protected int getScrollbarPosition() {
+        return this.width - 6 + x0;
     }
 
     protected abstract static class Entry extends AbstractListWidget.Entry {

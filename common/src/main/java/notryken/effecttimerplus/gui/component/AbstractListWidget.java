@@ -23,9 +23,9 @@ public abstract class AbstractListWidget extends ContainerObjectSelectionList<Ab
 
     protected final ConfigScreen parent;
 
-    public AbstractListWidget(Minecraft minecraft, int width, int height, int y, int itemHeight,
-                              ConfigScreen parent) {
-        super(minecraft, width, height, y, itemHeight);
+    public AbstractListWidget(Minecraft minecraft, int width, int height, int top, int bottom,
+                              int itemHeight, ConfigScreen parent) {
+        super(minecraft, width, height, top, bottom, itemHeight);
         this.parent = parent;
     }
 
@@ -35,12 +35,7 @@ public abstract class AbstractListWidget extends ContainerObjectSelectionList<Ab
 
     @Override
     public int getRowWidth() {
-        return this.width - 10;
-    }
-
-    @Override
-    protected int getScrollbarPosition() {
-        return this.width - 6 + this.getX();
+        return this.width - 15;
     }
 
     /**

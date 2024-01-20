@@ -23,8 +23,9 @@ public class PotencyListWidget extends AbstractListWidget  {
     protected AbstractListWidget.Entry resetButton;
 
 
-    public PotencyListWidget(Minecraft minecraft, int width, int height, int y, int itemHeight, ConfigScreen parent) {
-        super(minecraft, width, height, y, itemHeight, parent);
+    public PotencyListWidget(Minecraft minecraft, int width, int height, int top, int bottom,
+                             int itemHeight, ConfigScreen parent) {
+        super(minecraft, width, height, top, bottom, itemHeight, parent);
 
         int unitWidth = 200;
         int unitHeight = 18;
@@ -101,5 +102,10 @@ public class PotencyListWidget extends AbstractListWidget  {
         addEntry(blueSlider);
         addEntry(backAlphaSlider);
         addEntry(resetButton);
+    }
+
+    @Override
+    protected int getScrollbarPosition() {
+        return this.width - 6;
     }
 }
