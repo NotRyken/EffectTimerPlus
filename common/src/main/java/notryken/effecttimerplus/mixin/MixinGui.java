@@ -17,6 +17,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Collection;
 
+/**
+ * Includes derivative work of code used by
+ * <a href="https://github.com/magicus/statuseffecttimer/">Status Effect Timer</a>
+ */
 @Mixin(value = Gui.class, priority = 500)
 public class MixinGui {
 

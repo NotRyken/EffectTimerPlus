@@ -1,12 +1,19 @@
+                                   LICENSE
+
+Except where otherwise specified, the following notice applies to all source
+files of EffectTimerPlus.
+
+##############################################################################
+
 Copyright (C) 2024 NotRyken
 
-EffectTimerPlus is free software: you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License version 3 as published
-by the Free Software Foundation.
+EffectTimerPlus is free software: you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License version 3 as
+published by the Free Software Foundation.
 
-EffectTimerPlus is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+EffectTimerPlus is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
 details.
 
 You should have received a copy of the GNU General Public License (COPYING)
@@ -27,5 +34,4 @@ Source: <https://github.com/magicus/statuseffecttimer/>
 
 ##############################################################################
 
-SPDX-FileCopyrightText: 2024 NotRyken <notryken@gmail.com>
 SPDX-License-Identifier: LGPL-3.0-only

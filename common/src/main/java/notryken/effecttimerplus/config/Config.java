@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 /**
- * Configuration options class. Loosely based on the design used by
+ * Includes derivative work of code used by
  * <a href="https://github.com/CaffeineMC/sodium-fabric/">Sodium</a>
  */
 public class Config {
