@@ -11,9 +11,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import notryken.effecttimerplus.EffectTimerPlus;
-import notryken.effecttimerplus.gui.component.PotencyListWidget;
-import notryken.effecttimerplus.gui.component.TimerListWidget;
-import notryken.effecttimerplus.util.Util;
+import notryken.effecttimerplus.gui.component.listwidget.PotencyListWidget;
+import notryken.effecttimerplus.gui.component.listwidget.TimerListWidget;
+import notryken.effecttimerplus.gui.component.widget.DoubleSlider;
+import notryken.effecttimerplus.util.MiscUtil;
+
+import static notryken.effecttimerplus.EffectTimerPlus.config;
 
 public class ConfigScreen extends OptionsSubScreen {
 
@@ -39,6 +42,7 @@ public class ConfigScreen extends OptionsSubScreen {
     };
 
     // GUI elements
+    private DoubleSlider scaleSlider;
     private PotencyListWidget potencyOptionsList;
     private TimerListWidget timerOptionsList;
     private Button resetButton;
@@ -57,7 +61,13 @@ public class ConfigScreen extends OptionsSubScreen {
     @Override
     protected void init() {
 
-        int paneTopY = MIN_Y + 65;
+        int optionsTopY = MIN_Y + 65;
+
+        scaleSlider = new DoubleSlider(this.width / 2 - 80, optionsTopY + 5, 160, 20, 0,
+                2, 1, "Icon Scale: ", null, null, null,
+                () -> config().scale, (value) -> config().scale = value);
+
+        int paneTopY = optionsTopY + 30;
         int paneHeight = height - paneTopY - 36;
         int paneWidth = width / 2 - 8;
         int rightPaneX = width - paneWidth;
@@ -83,6 +93,7 @@ public class ConfigScreen extends OptionsSubScreen {
                 .size(150, 20)
                 .build();
 
+        addRenderableWidget(scaleSlider);
         addRenderableWidget(potencyOptionsList);
         addRenderableWidget(timerOptionsList);
         addRenderableWidget(resetButton);
@@ -94,6 +105,7 @@ public class ConfigScreen extends OptionsSubScreen {
         renderDirtBackground(graphics);
         super.render(graphics, mouseX, mouseY, delta);
         graphics.drawCenteredString(font, title, width / 2, 15, 16777215);
+        scaleSlider.render(graphics, mouseX, mouseY, delta);
 
         // Render demo status effect icons
         int xSpace = 27; // Icon spacing
@@ -105,24 +117,24 @@ public class ConfigScreen extends OptionsSubScreen {
             graphics.blit(x + 3, y + 3, 0, 18, 18, minecraft.getMobEffectTextures().get(effect.getEffect()));
 
             // Render potency overlay
-            if (EffectTimerPlus.config().potencyEnabled && effect.getAmplifier() > 0) {
-                String label = Util.getAmplifierAsString(effect.getAmplifier());
+            if (config().potencyEnabled && effect.getAmplifier() > 0) {
+                String label = MiscUtil.getAmplifierAsString(effect.getAmplifier());
                 int labelWidth = minecraft.font.width(label);
-                int pX = x + Util.getTextOffsetX(EffectTimerPlus.config().getPotencyLocation(), labelWidth);
-                int pY = y + Util.getTextOffsetY(EffectTimerPlus.config().getPotencyLocation());
+                int pX = x + MiscUtil.getTextOffsetX(config().getPotencyLocation(), labelWidth);
+                int pY = y + MiscUtil.getTextOffsetY(config().getPotencyLocation());
                 graphics.fill(pX, pY, pX + labelWidth, pY + minecraft.font.lineHeight - 1,
-                        EffectTimerPlus.config().getPotencyBackColor());
-                graphics.drawString(minecraft.font, label, pX, pY, EffectTimerPlus.config().getPotencyColor(), false);
+                        config().getPotencyBackColor());
+                graphics.drawString(minecraft.font, label, pX, pY, config().getPotencyColor(), false);
             }
             // Render timer overlay
-            if (EffectTimerPlus.config().timerEnabled && (EffectTimerPlus.config().timerEnabledAmbient || !effect.isAmbient())) {
-                String label = Util.getDurationAsString(effect.getDuration());
+            if (config().timerEnabled && (config().timerEnabledAmbient || !effect.isAmbient())) {
+                String label = MiscUtil.getDurationAsString(effect.getDuration());
                 int labelWidth = minecraft.font.width(label);
-                int pX = x + Util.getTextOffsetX(EffectTimerPlus.config().getTimerLocation(), labelWidth);
-                int pY = y + Util.getTextOffsetY(EffectTimerPlus.config().getTimerLocation());
+                int pX = x + MiscUtil.getTextOffsetX(config().getTimerLocation(), labelWidth);
+                int pY = y + MiscUtil.getTextOffsetY(config().getTimerLocation());
                 graphics.fill(pX, pY, pX + labelWidth, pY + minecraft.font.lineHeight - 1,
-                        EffectTimerPlus.config().getTimerBackColor());
-                graphics.drawString(minecraft.font, label, pX, pY, Util.getTimerColor(effect), false);
+                        config().getTimerBackColor());
+                graphics.drawString(minecraft.font, label, pX, pY, MiscUtil.getTimerColor(effect), false);
             }
             x += xSpace;
         }
@@ -130,7 +142,7 @@ public class ConfigScreen extends OptionsSubScreen {
 
     @Override
     public void onClose() {
-        EffectTimerPlus.config().writeChanges();
+        config().writeToFile();
         super.onClose();
     }
 }

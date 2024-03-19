@@ -1,15 +1,15 @@
-package notryken.effecttimerplus.gui.component;
+package notryken.effecttimerplus.gui.component.listwidget;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import notryken.effecttimerplus.EffectTimerPlus;
 import notryken.effecttimerplus.gui.screen.ConfigScreen;
-import notryken.effecttimerplus.util.Util;
+import notryken.effecttimerplus.util.MiscUtil;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class PotencyListWidget extends AbstractListWidget  {
+public class PotencyListWidget extends AbstractListWidget {
 
     protected AbstractListWidget.Entry header;
     protected AbstractListWidget.Entry toggleButton;
@@ -65,25 +65,26 @@ public class PotencyListWidget extends AbstractListWidget  {
                 new Integer[]{0, 1, 2, 3, 4, 5, 6, 7},
                 (value) -> EffectTimerPlus.config().setPotencyLocation(value));
         colorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
-                (color) -> colorDest.accept(Util.withAlpha.applyAsInt(color, Util.toAlpha.applyAsInt(colorSource.get()))));
-        alphaSlider = new Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Opacity: ", colorSource, (alpha) ->
-                colorDest.accept(Util.withAlpha.applyAsInt(colorSource.get(), alpha)), Util.toAlpha, Util.fromAlpha);
-        redSlider = new Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Red: ", colorSource, (red) ->
-                colorDest.accept(Util.withRed.applyAsInt(colorSource.get(), red)), Util.toRed, Util.fromRed);
-        greenSlider = new Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Green: ", colorSource, (green) ->
-                colorDest.accept(Util.withGreen.applyAsInt(colorSource.get(), green)), Util.toGreen, Util.fromGreen);
-        blueSlider = new Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Blue: ", colorSource, (blue) ->
-                colorDest.accept(Util.withBlue.applyAsInt(colorSource.get(), blue)), Util.toBlue, Util.fromBlue);
+                (color) -> colorDest.accept(MiscUtil.withAlpha.applyAsInt(color, MiscUtil.toAlpha.applyAsInt(colorSource.get()))));
+
+        alphaSlider = new Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Opacity: ", colorSource,
+                (color) -> colorDest.accept(MiscUtil.withAlpha.applyAsInt(colorSource.get(), color)),
+                MiscUtil.toAlpha, MiscUtil.fromAlpha);
+        redSlider = new Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Red: ", colorSource,
+                (color) -> colorDest.accept(MiscUtil.withRed.applyAsInt(colorSource.get(), color)),
+                MiscUtil.toRed, MiscUtil.fromRed);
+        greenSlider = new Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Green: ", colorSource,
+                (color) -> colorDest.accept(MiscUtil.withGreen.applyAsInt(colorSource.get(), color)),
+                MiscUtil.toGreen, MiscUtil.fromGreen);
+        blueSlider = new Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Blue: ", colorSource,
+                (color) -> colorDest.accept(MiscUtil.withBlue.applyAsInt(colorSource.get(), color)),
+                MiscUtil.toBlue, MiscUtil.fromBlue);
 
         Supplier<Integer> backColorSource = EffectTimerPlus.config()::getPotencyBackColor;
         Consumer<Integer> backColorDest = EffectTimerPlus.config()::setPotencyBackColor;
-        backAlphaSlider = new Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Background Opacity: ", backColorSource, (alpha) ->
-                backColorDest.accept(Util.withAlpha.applyAsInt(backColorSource.get(), alpha)), Util.toAlpha, Util.fromAlpha);
+        backAlphaSlider = new Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Background Opacity: ", backColorSource,
+                (color) -> backColorDest.accept(MiscUtil.withAlpha.applyAsInt(backColorSource.get(), color)),
+                MiscUtil.toAlpha, MiscUtil.fromAlpha);
 
         resetButton = new AbstractListWidget.Entry.ActionButtonEntry(this, unitX, 0, unitWidth, unitHeight,
                 Component.literal("Reset"),

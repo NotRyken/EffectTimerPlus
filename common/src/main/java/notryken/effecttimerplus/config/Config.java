@@ -2,6 +2,10 @@ package notryken.effecttimerplus.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import notryken.effecttimerplus.EffectTimerPlus;
+import notryken.effecttimerplus.util.MiscUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -17,6 +21,7 @@ public class Config {
     // Constants and defaults
     public static final String DEFAULT_FILE_NAME = "effecttimerplus.json";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final float DEFAULT_SCALE = 1.0F;
     public static final int DEFAULT_COLOR = -1711276033; // 0x99FFFFFF
     public static final int DEFAULT_BACK_COLOR = -1776213727;
     public static final int DEFAULT_WARN_COLOR = -65536; // 0xFFFF0000
@@ -31,6 +36,7 @@ public class Config {
     private final int version = 1;
 
     // Saved, modifiable by user
+    public double scale;
     public boolean potencyEnabled;
     public boolean timerEnabled;
     public boolean timerEnabledAmbient;
@@ -46,6 +52,7 @@ public class Config {
     private int timerLocation;
 
     public Config() {
+        scale = DEFAULT_SCALE;
         potencyEnabled = true;
         timerEnabled = true;
         timerEnabledAmbient = false;
@@ -130,7 +137,10 @@ public class Config {
     // Validate and reset
 
     private int adjustColor(int color) {
-        return (color & -67108864) == 0 ? color | 0xFF000000 : color;
+        if (MiscUtil.toAlpha.applyAsInt(color) < 4) {
+            return MiscUtil.withAlpha.applyAsInt(color, MiscUtil.fromAlpha.applyAsInt(4));
+        }
+        return color;
     }
 
     /**
@@ -169,32 +179,34 @@ public class Config {
 
     // Load and save
 
-    public static Config load() {
-        return load(DEFAULT_FILE_NAME);
+    public static @NotNull Config load() {
+        Config config = load(DEFAULT_FILE_NAME);
+        if (config == null) {
+            EffectTimerPlus.LOG.info("Using default configuration.");
+            config = new Config();
+        }
+        config.writeToFile();
+        return config;
     }
 
-    public static Config load(String name) {
+    public static @Nullable Config load(String name) {
         configPath = Path.of("config").resolve(name);
-        Config config;
+        Config config = null;
 
         if (Files.exists(configPath)) {
             try (FileReader reader = new FileReader(configPath.toFile())) {
                 config = GSON.fromJson(reader, Config.class);
-                config.validate();
-            } catch (IOException e) {
-                throw new RuntimeException("Unable to parse config", e);
+            } catch (Exception e) {
+                EffectTimerPlus.LOG.error("Unable to load config from file '{}'.", configPath, e);
             }
+        } else {
+            EffectTimerPlus.LOG.warn("Unable to locate config file '{}'.", name);
         }
-        else {
-            config = new Config();
-        }
-
-        config.writeChanges();
         return config;
     }
 
-    public void writeChanges() {
-        Path dir = configPath == null ? Path.of("config") : configPath.getParent();
+    public void writeToFile() {
+        Path dir = configPath.getParent();
 
         try {
             if (!Files.exists(dir)) {

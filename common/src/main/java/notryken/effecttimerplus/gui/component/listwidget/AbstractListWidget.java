@@ -1,4 +1,4 @@
-package notryken.effecttimerplus.gui.component;
+package notryken.effecttimerplus.gui.component.listwidget;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -8,12 +8,17 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import notryken.effecttimerplus.gui.component.widget.ArgbChannelSlider;
 import notryken.effecttimerplus.gui.screen.ConfigScreen;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.IntUnaryOperator;
+import java.util.function.Supplier;
 
 /**
  * Abstract list widget used to factor out common code between
@@ -133,19 +138,19 @@ public abstract class AbstractListWidget extends ContainerObjectSelectionList<Ab
             }
         }
 
-        protected static class ArgbSliderEntry extends Entry {
-            ArgbElementSlider rgbaSlider;
-            public ArgbSliderEntry(AbstractListWidget list, int x, int y, int width, int height, String label,
-                                   Supplier<Integer>source, Consumer<Integer> dest,
-                                   IntUnaryOperator toChannel, IntUnaryOperator fromChannel) {
+        protected static class ArgbSliderEntry2 extends Entry {
+            ArgbChannelSlider slider;
+            public ArgbSliderEntry2(AbstractListWidget list, int x, int width, int height, @Nullable String message,
+                                  Supplier<Integer> source, Consumer<Integer> dest,
+                                  IntUnaryOperator toChannel, IntUnaryOperator fromChannel) {
                 super(list);
-                rgbaSlider = new ArgbElementSlider(x, y, width, height, label,
+                slider = new ArgbChannelSlider(x, 0, width, height, message, null,
                         source, dest, toChannel, fromChannel);
-                elements.add(rgbaSlider);
+                elements.add(slider);
             }
 
             public void refresh() {
-                rgbaSlider.refresh();
+                slider.refresh();
             }
         }
 
@@ -180,8 +185,8 @@ public abstract class AbstractListWidget extends ContainerObjectSelectionList<Ab
                             {
                                 dest.accept(color);
                                 for (Entry entry : list.children()) {
-                                    if (entry instanceof ArgbSliderEntry slider) {
-                                        slider.refresh();
+                                    if (entry instanceof ArgbSliderEntry2 sliderEntry) {
+                                        sliderEntry.refresh();
                                     }
                                 }
                             })

@@ -18,13 +18,14 @@ focus on customization.
 
 ### Features
 
-- Fully customizable text color and opacity
+- Scaling option to change the size of effect icons
+- Fully adjustable text color and opacity
 - Adjustable text background
 - 8 options for text position
 - Optional low-time warning color and flash
 - Option to disable either indicator separately
 - Option to hide timer on ambient (beacon) effects
-- Convenient configurability using a custom GUI 
+- Custom GUI for convenient configuration
   - Access using [ModMenu](https://modrinth.com/mod/modmenu/) on Fabric/Quilt
 
 <img alt="Showcase" src="https://i.postimg.cc/C1vDrKVN/effectinfo-showcase.png" width="637">
@@ -37,8 +38,8 @@ focus on customization.
 
 ### License
 
-Except where otherwise stated, EffectTimerPlus source files are provided under the terms of the GNU LGPL-3.0-only 
-open-source license. For more information, refer to the provided LICENSE file.
+Except where otherwise stated, EffectTimerPlus source files are provided under the terms of the GNU Lesser General Public
+License, version 3. For more information, refer to the provided LICENSE file.
 
 ### Contact
 

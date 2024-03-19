@@ -7,9 +7,9 @@ import notryken.effecttimerplus.EffectTimerPlus;
 import java.util.function.IntBinaryOperator;
 import java.util.function.IntUnaryOperator;
 
-public class Util {
+public class MiscUtil {
 
-    // RGBA color utils
+    // ARGB color utils
     public static final IntUnaryOperator toAlpha = (value) -> (value >> 24 & 255);
     public static final IntUnaryOperator toRed = (value) -> (value >> 16 & 255);
     public static final IntUnaryOperator toGreen = (value) -> (value >> 8 & 255);
@@ -19,13 +19,13 @@ public class Util {
     public static final IntUnaryOperator fromGreen = (value) -> (value * 256);
     public static final IntUnaryOperator fromBlue = (value) -> (value);
     public static final IntBinaryOperator withAlpha = (value, alpha) ->
-            ((alpha * 16777216) + value - (value >> 24 & 255) * 16777216);
+            (value - (fromAlpha.applyAsInt(toAlpha.applyAsInt(value))) + alpha);
     public static final IntBinaryOperator withRed = (value, red) ->
-            ((red * 65536) + value - (value >> 16 & 255) * 65536);
+            (value - (fromRed.applyAsInt(toRed.applyAsInt(value))) + red);
     public static final IntBinaryOperator withGreen = (value, green) ->
-            ((green * 256) + value - (value >> 8 & 255) * 256);
+            (value - (fromGreen.applyAsInt(toGreen.applyAsInt(value))) + green);
     public static final IntBinaryOperator withBlue = (value, blue) ->
-            ((blue) + value - (value & 255));
+            (value - (fromBlue.applyAsInt(toBlue.applyAsInt(value))) + blue);
 
     /**
      * @param effectInstance the {@code MobEffectInstance} to get color for.

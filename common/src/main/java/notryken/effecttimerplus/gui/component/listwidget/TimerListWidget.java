@@ -1,15 +1,16 @@
-package notryken.effecttimerplus.gui.component;
+package notryken.effecttimerplus.gui.component.listwidget;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import notryken.effecttimerplus.EffectTimerPlus;
+import notryken.effecttimerplus.gui.component.widget.DoubleSlider;
 import notryken.effecttimerplus.gui.screen.ConfigScreen;
-import notryken.effecttimerplus.util.Util;
+import notryken.effecttimerplus.util.MiscUtil;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class TimerListWidget extends AbstractListWidget  {
+public class TimerListWidget extends AbstractListWidget {
 
     protected AbstractListWidget.Entry mainHeader;
     protected AbstractListWidget.Entry mainToggleButton;
@@ -76,25 +77,26 @@ public class TimerListWidget extends AbstractListWidget  {
                 new Integer[]{0, 1, 2, 3, 4, 5, 6, 7},
                 (value) -> EffectTimerPlus.config().setTimerLocation(value));
         colorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
-                (color) -> colorDest.accept(Util.withAlpha.applyAsInt(color, Util.toAlpha.applyAsInt(colorSource.get()))));
-        alphaSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Opacity: ", colorSource, (alpha) ->
-                colorDest.accept(Util.withAlpha.applyAsInt(colorSource.get(), alpha)), Util.toAlpha, Util.fromAlpha);
-        redSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Red: ", colorSource, (red) ->
-                colorDest.accept(Util.withRed.applyAsInt(colorSource.get(), red)), Util.toRed, Util.fromRed);
-        greenSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Green: ", colorSource, (green) ->
-                colorDest.accept(Util.withGreen.applyAsInt(colorSource.get(), green)), Util.toGreen, Util.fromGreen);
-        blueSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Blue: ", colorSource, (blue) ->
-                colorDest.accept(Util.withBlue.applyAsInt(colorSource.get(), blue)), Util.toBlue, Util.fromBlue);
+                (color) -> colorDest.accept(MiscUtil.withAlpha.applyAsInt(color, MiscUtil.toAlpha.applyAsInt(colorSource.get()))));
+
+        alphaSlider = new AbstractListWidget.Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Opacity: ", colorSource,
+                (color) -> colorDest.accept(MiscUtil.withAlpha.applyAsInt(colorSource.get(), color)),
+                MiscUtil.toAlpha, MiscUtil.fromAlpha);
+        redSlider = new AbstractListWidget.Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Red: ", colorSource,
+                (color) -> colorDest.accept(MiscUtil.withRed.applyAsInt(colorSource.get(), color)),
+                MiscUtil.toRed, MiscUtil.fromRed);
+        greenSlider = new AbstractListWidget.Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Green: ", colorSource,
+                (color) -> colorDest.accept(MiscUtil.withGreen.applyAsInt(colorSource.get(), color)),
+                MiscUtil.toGreen, MiscUtil.fromGreen);
+        blueSlider = new AbstractListWidget.Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Blue: ", colorSource,
+                (color) -> colorDest.accept(MiscUtil.withBlue.applyAsInt(colorSource.get(), color)),
+                MiscUtil.toBlue, MiscUtil.fromBlue);
 
         Supplier<Integer> backColorSource = EffectTimerPlus.config()::getTimerBackColor;
         Consumer<Integer> backColorDest = EffectTimerPlus.config()::setTimerBackColor;
-        backAlphaSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Background Opacity: ", backColorSource, (alpha) ->
-                backColorDest.accept(Util.withAlpha.applyAsInt(backColorSource.get(), alpha)), Util.toAlpha, Util.fromAlpha);
+        backAlphaSlider = new AbstractListWidget.Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Background Opacity: ", backColorSource,
+                (color) -> backColorDest.accept(MiscUtil.withAlpha.applyAsInt(backColorSource.get(), color)),
+                MiscUtil.toAlpha, MiscUtil.fromAlpha);
 
         Supplier<Integer> warnColorSource = EffectTimerPlus.config()::getTimerWarnColor;
         Consumer<Integer> warnColorDest = EffectTimerPlus.config()::setTimerWarnColor;
@@ -108,19 +110,20 @@ public class TimerListWidget extends AbstractListWidget  {
                 (value) -> EffectTimerPlus.config().timerFlashEnabled = value);
         warnTimeSlider = new Entry.WarnTimeSlider(this, unitX, 0, unitWidth, unitHeight);
         warnColorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
-                (color) -> warnColorDest.accept(Util.withAlpha.applyAsInt(color, Util.toAlpha.applyAsInt(warnColorSource.get()))));
-        warnAlphaSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Opacity: ", warnColorSource, (alpha) ->
-                warnColorDest.accept(Util.withAlpha.applyAsInt(warnColorSource.get(), alpha)), Util.toAlpha, Util.fromAlpha);
-        warnRedSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Red: ", warnColorSource, (red) ->
-                warnColorDest.accept(Util.withRed.applyAsInt(warnColorSource.get(), red)), Util.toRed, Util.fromRed);
-        warnGreenSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Green: ", warnColorSource, (green) ->
-                warnColorDest.accept(Util.withGreen.applyAsInt(warnColorSource.get(), green)), Util.toGreen, Util.fromGreen);
-        warnBlueSlider = new AbstractListWidget.Entry.ArgbSliderEntry(this, unitX, 0, unitWidth, unitHeight,
-                "Blue: ", warnColorSource, (blue) ->
-                warnColorDest.accept(Util.withBlue.applyAsInt(warnColorSource.get(), blue)), Util.toBlue, Util.fromBlue);
+                (color) -> warnColorDest.accept(MiscUtil.withAlpha.applyAsInt(color, MiscUtil.toAlpha.applyAsInt(warnColorSource.get()))));
+
+        warnAlphaSlider = new AbstractListWidget.Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Opacity: ", warnColorSource,
+                (color) -> warnColorDest.accept(MiscUtil.withAlpha.applyAsInt(warnColorSource.get(), color)),
+                MiscUtil.toAlpha, MiscUtil.fromAlpha);
+        warnRedSlider = new AbstractListWidget.Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Red: ", warnColorSource,
+                (color) -> warnColorDest.accept(MiscUtil.withRed.applyAsInt(warnColorSource.get(), color)),
+                MiscUtil.toRed, MiscUtil.fromRed);
+        warnGreenSlider = new AbstractListWidget.Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Green: ", warnColorSource,
+                (color) -> warnColorDest.accept(MiscUtil.withGreen.applyAsInt(warnColorSource.get(), color)),
+                MiscUtil.toGreen, MiscUtil.fromGreen);
+        warnBlueSlider = new AbstractListWidget.Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Blue: ", warnColorSource,
+                (color) -> warnColorDest.accept(MiscUtil.withBlue.applyAsInt(warnColorSource.get(), color)),
+                MiscUtil.toBlue, MiscUtil.fromBlue);
 
         resetButton = new AbstractListWidget.Entry.ActionButtonEntry(this, unitX, 0, unitWidth, unitHeight,
                 Component.literal("Reset"),
@@ -164,10 +167,11 @@ public class TimerListWidget extends AbstractListWidget  {
             public WarnTimeSlider(TimerListWidget list, int x, int y, int width, int height) {
                 super(list);
 
-                IntSlider warningTimeSlider = new IntSlider(x, y, width, height,
-                        120, "Warning Time: ", " sec",
-                        EffectTimerPlus.config()::getTimerWarnTime,
-                        (value) -> EffectTimerPlus.config().setTimerWarnTime(value));
+                DoubleSlider warningTimeSlider = new DoubleSlider(x, y, width, height,
+                        0, 120, 0, "Warning Time: ", " sec",
+                        null, null,
+                        () -> (double)EffectTimerPlus.config().getTimerWarnTime(),
+                        (value) -> EffectTimerPlus.config().setTimerWarnTime(value.intValue()));
                 elements.add(warningTimeSlider);
             }
         }
