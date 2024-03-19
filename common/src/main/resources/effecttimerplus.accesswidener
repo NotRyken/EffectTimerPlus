@@ -1,1 +1,3 @@
 accessWidener v1 named
+accessible field net/minecraft/client/gui/Gui EFFECT_BACKGROUND_AMBIENT_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field net/minecraft/client/gui/Gui EFFECT_BACKGROUND_SPRITE Lnet/minecraft/resources/ResourceLocation;

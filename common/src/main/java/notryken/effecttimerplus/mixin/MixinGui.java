@@ -95,9 +95,9 @@ public class MixinGui {
                 float alpha;
                 if (effectInstance.isAmbient()) {
                     alpha = 1.0F;
-                    graphics.blit(AbstractContainerScreen.INVENTORY_LOCATION, right, top, 165, 166, 24, 24);
+                    graphics.blitSprite(Gui.EFFECT_BACKGROUND_AMBIENT_SPRITE, right, top, 24, 24);
                 } else {
-                    graphics.blit(AbstractContainerScreen.INVENTORY_LOCATION, right, top, 141, 166, 24, 24);
+                    graphics.blitSprite(Gui.EFFECT_BACKGROUND_SPRITE, right, top, 24, 24);
                     if (effectInstance.endsWithin(200)) {
                         int duration = effectInstance.getDuration();
                         int $$13 = 10 - duration / 20;
