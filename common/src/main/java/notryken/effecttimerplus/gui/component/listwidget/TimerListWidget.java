@@ -77,7 +77,8 @@ public class TimerListWidget extends AbstractListWidget {
                 new Integer[]{0, 1, 2, 3, 4, 5, 6, 7},
                 (value) -> EffectTimerPlus.config().setTimerLocation(value));
         colorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
-                (color) -> colorDest.accept(MiscUtil.withAlpha.applyAsInt(color, MiscUtil.toAlpha.applyAsInt(colorSource.get()))));
+                (color) -> colorDest.accept(MiscUtil.withAlpha.applyAsInt(color,
+                        MiscUtil.fromAlpha.applyAsInt(MiscUtil.toAlpha.applyAsInt(colorSource.get())))));
 
         alphaSlider = new AbstractListWidget.Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Opacity: ", colorSource,
                 (color) -> colorDest.accept(MiscUtil.withAlpha.applyAsInt(colorSource.get(), color)),
@@ -110,7 +111,8 @@ public class TimerListWidget extends AbstractListWidget {
                 (value) -> EffectTimerPlus.config().timerFlashEnabled = value);
         warnTimeSlider = new Entry.WarnTimeSlider(this, unitX, 0, unitWidth, unitHeight);
         warnColorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
-                (color) -> warnColorDest.accept(MiscUtil.withAlpha.applyAsInt(color, MiscUtil.toAlpha.applyAsInt(warnColorSource.get()))));
+                (color) -> warnColorDest.accept(MiscUtil.withAlpha.applyAsInt(color,
+                        MiscUtil.fromAlpha.applyAsInt(MiscUtil.toAlpha.applyAsInt(warnColorSource.get())))));
 
         warnAlphaSlider = new AbstractListWidget.Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Opacity: ", warnColorSource,
                 (color) -> warnColorDest.accept(MiscUtil.withAlpha.applyAsInt(warnColorSource.get(), color)),

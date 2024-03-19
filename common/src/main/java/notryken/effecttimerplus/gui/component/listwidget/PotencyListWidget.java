@@ -65,7 +65,8 @@ public class PotencyListWidget extends AbstractListWidget {
                 new Integer[]{0, 1, 2, 3, 4, 5, 6, 7},
                 (value) -> EffectTimerPlus.config().setPotencyLocation(value));
         colorSelectionSet = new AbstractListWidget.Entry.ColorSelectionSet(this, unitX, 0, unitWidth,
-                (color) -> colorDest.accept(MiscUtil.withAlpha.applyAsInt(color, MiscUtil.toAlpha.applyAsInt(colorSource.get()))));
+                (color) -> colorDest.accept(MiscUtil.withAlpha.applyAsInt(color,
+                        MiscUtil.fromAlpha.applyAsInt(MiscUtil.toAlpha.applyAsInt(colorSource.get())))));
 
         alphaSlider = new Entry.ArgbSliderEntry2(this, unitX, unitWidth, unitHeight, "Opacity: ", colorSource,
                 (color) -> colorDest.accept(MiscUtil.withAlpha.applyAsInt(colorSource.get(), color)),
