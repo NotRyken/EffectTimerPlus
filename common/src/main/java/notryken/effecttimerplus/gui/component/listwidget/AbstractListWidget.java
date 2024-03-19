@@ -28,9 +28,9 @@ public abstract class AbstractListWidget extends ContainerObjectSelectionList<Ab
 
     protected final ConfigScreen parent;
 
-    public AbstractListWidget(Minecraft minecraft, int width, int height, int top, int bottom,
+    public AbstractListWidget(Minecraft minecraft, int width, int height, int y,
                               int itemHeight, ConfigScreen parent) {
-        super(minecraft, width, height, top, bottom, itemHeight);
+        super(minecraft, width, height, y, itemHeight);
         this.parent = parent;
     }
 

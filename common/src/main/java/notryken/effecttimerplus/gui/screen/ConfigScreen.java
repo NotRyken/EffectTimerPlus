@@ -72,13 +72,11 @@ public class ConfigScreen extends OptionsSubScreen {
         int paneWidth = width / 2 - 8;
         int rightPaneX = width - paneWidth;
 
-        potencyOptionsList = new PotencyListWidget(minecraft, paneWidth, paneHeight,
-                paneTopY, height-36, ITEM_HEIGHT, this);
-        potencyOptionsList.setLeftPos(0);
+        potencyOptionsList = new PotencyListWidget(minecraft, paneWidth, paneHeight, paneTopY, ITEM_HEIGHT, this);
+        potencyOptionsList.setX(0);
 
-        timerOptionsList = new TimerListWidget(minecraft, paneWidth, paneHeight,
-                paneTopY, height-36, ITEM_HEIGHT, this);
-        timerOptionsList.setLeftPos(rightPaneX);
+        timerOptionsList = new TimerListWidget(minecraft, paneWidth, paneHeight, paneTopY, ITEM_HEIGHT, this);
+        timerOptionsList.setX(rightPaneX);
 
         resetButton = Button.builder(Component.literal("Reset All"), (button) -> {
             EffectTimerPlus.restoreDefaultConfig();
