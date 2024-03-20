@@ -5,7 +5,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -14,6 +13,7 @@ import notryken.effecttimerplus.EffectTimerPlus;
 import notryken.effecttimerplus.gui.component.listwidget.PotencyListWidget;
 import notryken.effecttimerplus.gui.component.listwidget.TimerListWidget;
 import notryken.effecttimerplus.gui.component.widget.DoubleSlider;
+import notryken.effecttimerplus.mixin.accessor.GuiAccessor;
 import notryken.effecttimerplus.util.MiscUtil;
 
 import static notryken.effecttimerplus.EffectTimerPlus.config;
@@ -102,7 +102,6 @@ public class ConfigScreen extends OptionsSubScreen {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        renderDirtBackground(graphics);
         super.render(graphics, mouseX, mouseY, delta);
         graphics.drawCenteredString(font, title, width / 2, 15, 16777215);
         scaleSlider.render(graphics, mouseX, mouseY, delta);
@@ -113,7 +112,7 @@ public class ConfigScreen extends OptionsSubScreen {
         int y = MIN_Y + 40; // Icon placement reference point is bottom left
 
         for (MobEffectInstance effect : DEMO_EFFECTS) {
-            graphics.blit(AbstractContainerScreen.INVENTORY_LOCATION, x, y, 165, 166, 24, 24);
+            graphics.blitSprite(GuiAccessor.getEffectBackgroundSprite(), x, y, 24, 24);
             graphics.blit(x + 3, y + 3, 0, 18, 18, minecraft.getMobEffectTextures().get(effect.getEffect()));
 
             // Render potency overlay
@@ -138,6 +137,11 @@ public class ConfigScreen extends OptionsSubScreen {
             }
             x += xSpace;
         }
+    }
+
+    @Override
+    public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        this.renderDirtBackground(graphics);
     }
 
     @Override
